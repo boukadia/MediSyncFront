@@ -1,0 +1,27 @@
+/* Styles personnalisés pour compléter Bootstrap */
+
+/* Assurer que le corps prend toute la hauteur */
+html, body, #root {
+  height: 100%;
+}
+
+/* Améliorer les transitions */
+* {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Styles pour les liens au survol */
+a {
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* Améliorer l'apparence des boutons ronds pour les icônes sociales */
+.btn-sm.rounded-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
