@@ -1,0 +1,232 @@
+/* Style avancé pour LoginForm */
+
+* {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Utility classes */
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.transition-all {
+    transition: all 0.3s ease;
+}
+
+/* Background with animation */
+body {
+    background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
+    position: relative;
+    overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: radial-gradient(circle, rgba(255,255,255,0.08) 1px, transparent 1px);
+    background-size: 40px 40px;
+    animation: backgroundMove 15s linear infinite;
+    z-index: -1;
+}
+
+@keyframes backgroundMove {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(40px, 40px); }
+}
+
+/* Left Panel Gradient */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+}
+
+.left-panel {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%) !important;
+    position: relative;
+}
+
+.left-panel::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    pointer-events: none;
+}
+
+/* Right Panel */
+.right-panel {
+    background: white;
+    position: relative;
+    padding: 3rem 4rem !important;
+}
+
+@media (max-width: 991.98px) {
+    .right-panel {
+        padding: 2rem !important;
+    }
+}
+
+/* Clinic logo animation */
+.clinic-logo {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+/* Feature icon sizing */
+.benefit-icon {
+    width: 45px;
+    height: 45px;
+}
+
+/* User type buttons */
+.user-type-btn {
+    border: 2px solid #e9ecef !important;
+    background: white;
+    color: #6c757d;
+    border-radius: 12px !important;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.user-type-btn:hover {
+    border-color: #6366f1 !important;
+    color: #6366f1;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2);
+}
+
+.user-type-btn.active {
+    background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(139,92,246,0.1) 100%) !important;
+    border-color: #6366f1 !important;
+    color: #6366f1 !important;
+    box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+}
+
+/* Custom button gradient */
+.btn-primary {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    border: none;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* Input group styling */
+.input-group-text {
+    border: 2px solid #e9ecef;
+    border-right: none;
+    background: #f8f9fa;
+    border-radius: 10px 0 0 10px !important;
+}
+
+.form-control {
+    border: 2px solid #e9ecef;
+    border-radius: 10px !important;
+    padding: 12px 16px;
+    font-size: 15px;
+    transition: all 0.3s ease;
+}
+
+.form-control.border-start-0 {
+    border-left: none;
+    border-radius: 0 10px 10px 0 !important;
+}
+
+.form-control:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.15);
+}
+
+.input-group-text + .form-control:focus {
+    border-color: #6366f1;
+}
+
+.form-control:focus + .input-group-text,
+.input-group:focus-within .input-group-text {
+    border-color: #6366f1;
+    background: rgba(99, 102, 241, 0.05);
+}
+
+/* Form labels */
+.form-label {
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 8px;
+}
+
+/* Checkbox styling */
+.form-check-input:checked {
+    background-color: #6366f1;
+    border-color: #6366f1;
+}
+
+.form-check-input:focus {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 0.2rem rgba(99, 102, 241, 0.15);
+}
+
+/* Links */
+a {
+    transition: all 0.2s ease;
+}
+
+a:hover {
+    opacity: 0.8;
+}
+
+/* Card styling */
+.card {
+    border: none;
+    border-radius: 20px !important;
+}
+
+/* Responsive */
+@media (max-width: 991.98px) {
+    .right-panel {
+        padding: 2rem !important;
+    }
+    
+    .left-panel {
+        padding: 2rem !important;
+        min-height: 400px;
+    }
+    
+    .user-type-btn {
+        padding: 0.8rem !important;
+        font-size: 13px;
+    }
+    
+    .clinic-logo {
+        width: 70px !important;
+        height: 70px !important;
+    }
+}
+
+@media (max-width: 576px) {
+    .card {
+        margin: 1rem;
+        border-radius: 15px !important;
+    }
+    
+    .user-type-btn i {
+        font-size: 1.5rem !important;
+    }
+    
+    .right-panel {
+        padding: 1.5rem !important;
+    }
+}
