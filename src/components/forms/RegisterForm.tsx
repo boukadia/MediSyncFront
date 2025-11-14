@@ -6,12 +6,46 @@ import PanelLeft from '../layout/PanelLeft';
 function RegisterForm() {
     const backgroundButton = (e) => {
         console.log((e.currentTarget.children[1].textContent));
+        const test=document.querySelectorAll(".test")
+        // test.forEach(element => {
+        //     element.classList.remove('d-none')
+        // });
+        test.forEach(element => {
+            element.classList.add('d-none')
+        });
+        console.log(test);
         
-        // if (e.currentTarget.children[1].textContent) {
+        
+        if (e.currentTarget.children[1].textContent==='Medecin') {
+           const medecinField= document.getElementById("doctorFields")
+           medecinField.classList.remove("d-none")
+           medecinField.classList.add("test")
+
             
-        // } else {
+        } else if(e.currentTarget.children[1].textContent==='Patient') {
+            const patientFields=document.getElementById('patientFields')
+            patientFields.classList.remove("d-none")
             
-        // }
+            
+        } else if(e.currentTarget.children[1].textContent==='Secretaire') {
+            const adminFields=document.getElementById('adminFields')
+            adminFields.classList.remove("d-none")
+            
+            
+        } else if(e.currentTarget.children[1].textContent==='Pharmacy') {
+            const pharmacyFields=document.getElementById('pharmacyFields')
+            pharmacyFields.classList.remove("d-none")
+            
+            
+        } else if(e.currentTarget.children[1].textContent==='Laboratoire') {
+            const laboratoireFields=document.getElementById('laboratoireFields')
+            laboratoireFields.classList.remove("d-none")
+            
+            
+        } else if(e.currentTarget.children[1].textContent==='Admin') {
+            const adminFields=document.getElementById('adminFields')
+            
+        }
 
     const btn = document.querySelectorAll(".user-type-card");
     btn.forEach(function (bt) {
@@ -53,7 +87,7 @@ function RegisterForm() {
                                 <div className="col-4">
                                     <div onClick={backgroundButton} className="user-type-card  border border-2 rounded-3 p-3 text-center cursor-pointer bg-white transition-all " >
                                         <i className="fas fa-user-md fs-2 text-secondary d-block mb-2"></i>
-                                        <span className="d-block fw-semibold small text-secondary">Farmacy</span>
+                                        <span className="d-block fw-semibold small text-secondary">Pharmacy</span>
                                     </div>
                                 </div>
                                 <div className="col-4">
@@ -102,7 +136,7 @@ function RegisterForm() {
                                 </div>
 
 
- <div id="pharmacyFields"  className="d-none">
+ <div id="pharmacyFields"   className="d-none test">
 
 
                         <div className="row g-3 mb-3">
@@ -124,7 +158,7 @@ function RegisterForm() {
 
  </div>
 
- <div id="laboratoireFields" className="d-none" >
+ <div id="laboratoireFields" className="d-none test" >
 
 
                         <div className="row g-3 mb-3">
@@ -233,7 +267,7 @@ function RegisterForm() {
 
         
                                
-                                <div id="patientFields" className="d-none">
+                                <div id="patientFields" className="d-none test">
                                     <div className="row g-3 mb-3">
                                         <div className="col-md-6">
                                             <label className="form-label fw-semibold">Date de naissance *</label>
@@ -271,7 +305,7 @@ function RegisterForm() {
                                 </div>
         
                                 
-                                <div id="adminFields" className="d-none">
+                                <div id="adminFields" className="d-none test">
                                     <div className="row g-3 mb-3">
                                         <div className="col-md-6">
                                             <label className="form-label fw-semibold">Département *</label>

@@ -10,8 +10,14 @@ function LoginForm() {
    const [telephone,setTelephone]=useState("");
    const [password,setPassword]=useState("");
    const [confirmation,setConfirmation]=useState("");
+   
 
   const backgroundButton = (e) => {
+    // if (e.currentTarget.ch) {
+      
+    // } else {
+      
+    // }
 
     const btn = document.querySelectorAll(".user-type-btn");
     btn.forEach(function (bt) {
@@ -40,7 +46,17 @@ function LoginForm() {
       className="btn btn-outline-primary w-100 text-center py-3 user-type-btn active"
     >
       <i className="fas fa-user-md d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Médecin</small>
+      <small className="fw-semibold">Medecin</small>
+    </button>
+  </div>
+  <div className="col">
+    <button
+      onClick={backgroundButton}
+      type="button"
+      className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
+    >
+      <i className="fas fa-user-injured d-block fs-4 mb-2"></i>
+      <small className="fw-semibold">Secretaire</small>
     </button>
   </div>
   <div className="col">
@@ -60,7 +76,7 @@ function LoginForm() {
       className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
     >
       <i className="fas fa-user-injured d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Patient</small>
+      <small className="fw-semibold">Laboratoire</small>
     </button>
   </div>
   <div className="col">
@@ -70,17 +86,7 @@ function LoginForm() {
       className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
     >
       <i className="fas fa-user-injured d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Patient</small>
-    </button>
-  </div>
-  <div className="col">
-    <button
-      onClick={backgroundButton}
-      type="button"
-      className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
-    >
-      <i className="fas fa-user-injured d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Patient</small>
+      <small className="fw-semibold">Pharmacy</small>
     </button>
   </div>
   <div className="col">
