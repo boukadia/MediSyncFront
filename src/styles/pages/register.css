@@ -66,14 +66,21 @@
         }
 
         /* User type card styles */
+        .user-type-card {
+            transition: all 0.3s ease;
+        }
+        
+        .user-type-card:hover {
+            border-color: #6366f1 !important;
+            background: rgba(99, 102, 241, 0.05) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.2);
+        }
+        
         .user-type-card.active {
             border-color: #6366f1 !important;
             background: linear-gradient(135deg, rgba(99,102,241,0.1) 0%, rgba(139,92,246,0.1) 100%) !important;
-        }
-
-        .user-type-card:hover,
-        .user-type-card.active {
-            border-color: #6366f1;
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
         }
 
         .user-type-card.active i,

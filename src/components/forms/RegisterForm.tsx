@@ -2,48 +2,61 @@
 // RegisterForm
 import '../../styles/pages/register.css';
 import PanelLeft from '../layout/PanelLeft';
+import { useState } from 'react';
 
 function RegisterForm() {
-    const backgroundButton = (e) => {
-        console.log((e.currentTarget.children[1].textContent));
-        const test=document.querySelectorAll(".test")
-        // test.forEach(element => {
+    const backgroundButton = (e: React.MouseEvent<HTMLDivElement>) => {
+        const target = e.currentTarget.children[1] as HTMLElement;
+        const fields = document.querySelectorAll(".fields")
+        // fields.forEach(element => {
         //     element.classList.remove('d-none')
         // });
-        test.forEach(element => {
+        fields.forEach(element => {
             element.classList.add('d-none')
         });
-        console.log(test);
         
-        
-        if (e.currentTarget.children[1].textContent==='Medecin') {
-           const medecinField= document.getElementById("doctorFields")
-           medecinField.classList.remove("d-none")
-           medecinField.classList.add("test")
+        if (target.textContent === 'Medecin') {
+            const medecinField = document.getElementById("doctorFields")
+            if (medecinField) {
+                medecinField.classList.remove("d-none")
+                medecinField.classList.add("fields")
+            }
 
             
-        } else if(e.currentTarget.children[1].textContent==='Patient') {
-            const patientFields=document.getElementById('patientFields')
-            patientFields.classList.remove("d-none")
+        } else if(target.textContent === 'Patient') {
+            const patientFields = document.getElementById('patientFields')
+            if (patientFields) {
+                patientFields.classList.remove("d-none")
+            }
             
             
-        } else if(e.currentTarget.children[1].textContent==='Secretaire') {
-            const adminFields=document.getElementById('adminFields')
-            adminFields.classList.remove("d-none")
+        } else if(target.textContent === 'Secretaire') {
+            const adminFields = document.getElementById('adminFields')
+            if (adminFields) {
+                adminFields.classList.remove("d-none")
+            }
             
             
-        } else if(e.currentTarget.children[1].textContent==='Pharmacy') {
-            const pharmacyFields=document.getElementById('pharmacyFields')
-            pharmacyFields.classList.remove("d-none")
+        } else if(target.textContent === 'Pharmacy') {
+            const pharmacyFields = document.getElementById('pharmacyFields')
+            if (pharmacyFields) {
+                pharmacyFields.classList.remove("d-none")
+            }
             
             
-        } else if(e.currentTarget.children[1].textContent==='Laboratoire') {
-            const laboratoireFields=document.getElementById('laboratoireFields')
-            laboratoireFields.classList.remove("d-none")
+        } else if(target.textContent === 'Laboratoire') {
+            const laboratoireFields = document.getElementById('laboratoireFields')
+            if (laboratoireFields) {
+                laboratoireFields.classList.remove("d-none")
+            }
             
             
-        } else if(e.currentTarget.children[1].textContent==='Admin') {
-            const adminFields=document.getElementById('adminFields')
+        } else if(target.textContent === 'Admin') {
+            const adminFields = document.getElementById('adminFields')
+            if (adminFields) {
+                adminFields.classList.remove("d-none")
+            }
+            
             
         }
 
@@ -52,9 +65,61 @@ function RegisterForm() {
       bt.classList.remove("active");
     });
     e.currentTarget.classList.add("active");
-    console.log(e.currentTarget);
     
   };
+
+
+     const [email,setEmail]=useState("");
+     const [password,setPassword]=useState("");
+     const [firstName,setFirstName]=useState("");
+     const [name,setName]=useState("");
+     const [responsable,setResponsable]=useState("");
+     const [houresTravail,setHouresTravail]=useState("");
+     const [address,setAddress]=useState("");
+     const [pharmacistName,setPharmacistName]=useState("");
+     const [phone,setPhone]=useState("");
+     const [confirmPassword,setConfirmPassword]=useState("");
+     const [licenseNumber,setLicenseNumber]=useState("");
+     const [experience,setExperience]=useState("");
+     const [emergencyContact,setEmergencyContact]=useState("");
+     const [employeeId,setEmployeeId]=useState("");
+     const [birthDate,setBirthDate]=useState("");
+    // useEffect(()=>{
+      
+    // },[email])
+    function sendUser(){
+       fetch("http://localhost:3000/api/auth/register",{
+        method:'POST',
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+            email:email,
+            password:password,
+            name:name,
+            address:address,
+            // pharmacistName:pharmacistName,
+            phone:phone,
+            // confirmPassword:confirmPassword,
+            // licenseNumber:licenseNumber,
+            // experience:experience,
+            emergencyContact:emergencyContact,
+            // employeeId:employeeId,
+            // responsable:responsable,
+            // houresTravail:houresTravail
+            birthDate:birthDate
+
+        }),
+        
+    })
+    .then((res)=>res.json())
+    .then((data)=>{
+      console.log(data)
+    })
+    .catch((err)=>console.log(err))
+      
+     
+  }
     return(
        <div className="row g-0 flex-fill">
                      
@@ -119,38 +184,32 @@ function RegisterForm() {
                             <form id="registerForm" >
                              
                                 <div className="row g-3 mb-3">
-                                    <div className="col-md-6">
-                                        <label className="form-label fw-semibold">Prénom *</label>
-                                        <div className="position-relative">
-                                            <input type="text" className="form-control" id="firstName" placeholder="Entrez votre prénom" required />
-                                            <i className="fas fa-user input-icon text-secondary small"></i>
-                                        </div>
-                                    </div>
+                                   
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">Nom *</label>
                                         <div className="position-relative">
-                                            <input type="text" className="form-control" id="lastName" placeholder="Entrez votre nom" required />
+                                            <input onChange={(e)=>{setName(e.target.value)}} type="text" className="form-control" id="name" placeholder="Entrez votre nom" required />
                                             <i className="fas fa-user input-icon text-secondary small"></i>
                                         </div>
                                     </div>
                                 </div>
 
 
- <div id="pharmacyFields"   className="d-none test">
+ <div id="pharmacyFields"   className="d-none fields">
 
 
                         <div className="row g-3 mb-3">
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">Addresse *</label>
                                         <div className="position-relative">
-                                            <input type="text" className="form-control" id="Addresse" placeholder="Entrez votre address" required />
+                                            <input onChange={(e)=>{setAddress(e.target.value)}} type="text" className="form-control" id="Addresse" placeholder="Entrez votre address" required />
                                             <i className="fas fa-user input-icon text-secondary small"></i>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">PharmacyName *</label>
                                         <div className="position-relative">
-                                            <input type="text" className="form-control" id="PharmacistName" placeholder="Entrez le nom du pharmacy" required />
+                                            <input onChange={(e)=>{setPharmacistName(e.target.value)}} type="text" className="form-control" id="PharmacistName" placeholder="Entrez le nom du pharmacy" required />
                                             <i className="fas fa-user input-icon text-secondary small"></i>
                                         </div>
                                     </div>
@@ -158,28 +217,28 @@ function RegisterForm() {
 
  </div>
 
- <div id="laboratoireFields" className="d-none test" >
+ <div id="laboratoireFields" className="d-none fields" >
 
 
                         <div className="row g-3 mb-3">
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">Addresse *</label>
                                         <div className="position-relative">
-                                            <input type="text" className="form-control" id="Addresse" placeholder="Entrez votre address" required />
+                                            <input onChange={(e)=>{setAddress(e.target.value)}} type="text" className="form-control" id="Addresse" placeholder="Entrez votre address" required />
                                             <i className="fas fa-user input-icon text-secondary small"></i>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">responsable *</label>
                                         <div className="position-relative">
-                                            <input type="text" className="form-control" id="PharmacistName" placeholder="Entrez le nom du pharmacy" required />
+                                            <input onChange={(e)=>{setResponsable(e.target.value)}}  type="text" className="form-control" id="responsable" placeholder="Entrez le nom du responsable" required />
                                             <i className="fas fa-user input-icon text-secondary small"></i>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">houresTravail *</label>
                                         <div className="position-relative">
-                                            <input type="text" className="form-control" id="PharmacistName" placeholder="Entrez le nom du pharmacy" required />
+                                            <input onChange={(e)=>{setHouresTravail(e.target.value)}} type="text" className="form-control" id="houresTravail" placeholder="Entrez houresTravail" required />
                                             <i className="fas fa-user input-icon text-secondary small"></i>
                                         </div>
                                     </div>
@@ -192,14 +251,14 @@ function RegisterForm() {
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">Email *</label>
                                         <div className="position-relative">
-                                            <input type="email" className="form-control" id="email" placeholder="exemple@email.com" required />
+                                            <input onChange={(e)=>{setEmail(e.target.value)}} type="email" className="form-control" id="email" placeholder="exemple@email.com" required />
                                             <i className="fas fa-envelope input-icon text-secondary small"></i>
                                         </div>
                                     </div>
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">Téléphone *</label>
                                         <div className="position-relative">
-                                            <input type="tel" className="form-control" id="phone" placeholder="0612345678" required />
+                                            <input onChange={(e)=>{setPhone(e.target.value)}} type="tel" className="form-control" id="phone" placeholder="0612345678" required />
                                             <i className="fas fa-phone input-icon text-secondary small"></i>
                                         </div>
                                     </div>
@@ -209,7 +268,7 @@ function RegisterForm() {
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">Mot de passe *</label>
                                         <div className="position-relative">
-                                            <input type="password" className="form-control" id="password" placeholder="Mot de passe fort" required  /> {/*oninput={checkPasswordStrength}*/}
+                                            <input onChange={(e)=>{setPassword(e.target.value)}} type="password" className="form-control" id="password" placeholder="Mot de passe fort" required  /> {/*oninput={checkPasswordStrength}*/}
                                             <i className="fas fa-lock input-icon text-secondary small"></i>
                                         </div>
                                         <div className="password-strength mt-2 bg-light rounded-1 overflow-hidden" style={{height: '4px'}}>
@@ -219,14 +278,14 @@ function RegisterForm() {
                                     <div className="col-md-6">
                                         <label className="form-label fw-semibold">Confirmer *</label>
                                         <div className="position-relative">
-                                            <input type="password" className="form-control" id="confirmPassword" placeholder="Répétez le mot de passe" required />
+                                            <input onChange={(e)=>{setConfirmPassword(e.target.value)}} type="password" className="form-control" id="confirmPassword" placeholder="Répétez le mot de passe" required />
                                             <i className="fas fa-lock input-icon text-secondary small"></i>
                                         </div>
                                     </div>
                                 </div>
         
                                
-                                <div id="doctorFields" >
+                                <div id="doctorFields" className='fields' >
                                     <div className="row g-3 mb-3">
                                         <div className="col-md-6">
                                             <label className="form-label fw-semibold">Spécialité *</label>
@@ -246,7 +305,7 @@ function RegisterForm() {
                                         <div className="col-md-6">
                                             <label className="form-label fw-semibold">N° de licence *</label>
                                             <div className="position-relative">
-                                                <input type="text" className="form-control" id="licenseNumber" placeholder="Numéro de licence médicale" />
+                                                <input onChange={(e)=>{setLicenseNumber(e.target.value)}} type="text" className="form-control" id="licenseNumber" placeholder="Numéro de licence médicale" />
                                                 <i className="fas fa-id-card input-icon text-secondary small"></i>
                                             </div>
                                         </div>
@@ -254,7 +313,7 @@ function RegisterForm() {
                                     <div className="mb-3">
                                         <label className="form-label fw-semibold">Années d'expérience *</label>
                                         <div className="position-relative">
-                                            <input type="number" className="form-control" id="experience" placeholder="Nombre d'années" min="0" />
+                                            <input onChange={(e)=>{setExperience(e.target.value)}} type="number" className="form-control" id="experience" placeholder="Nombre d'années" min="0" />
                                             <i className="fas fa-briefcase input-icon text-secondary small"></i>
                                         </div>
                                     </div>
@@ -267,12 +326,12 @@ function RegisterForm() {
 
         
                                
-                                <div id="patientFields" className="d-none test">
+                                <div id="patientFields" className="d-none fields">
                                     <div className="row g-3 mb-3">
                                         <div className="col-md-6">
                                             <label className="form-label fw-semibold">Date de naissance *</label>
                                             <div className="position-relative">
-                                                <input type="date" className="form-control" id="birthDate" />
+                                                <input onChange={(e)=>{setBirthDate(e.target.value)}} type="date" className="form-control" id="birthDate" />
                                                 <i className="fas fa-calendar input-icon text-secondary small"></i>
                                             </div>
                                         </div>
@@ -291,21 +350,21 @@ function RegisterForm() {
                                     <div className="mb-3">
                                         <label className="form-label fw-semibold">Adresse *</label>
                                         <div className="position-relative">
-                                            <input type="text" className="form-control" id="address" placeholder="Votre adresse complète" />
+                                            <input onChange={(e)=>{setAddress(e.target.value)}} type="text" className="form-control" id="address" placeholder="Votre adresse complète" />
                                             <i className="fas fa-map-marker-alt input-icon text-secondary small"></i>
                                         </div>
                                     </div>
                                     <div className="mb-3">
                                         <label className="form-label fw-semibold">Contact d'urgence</label>
                                         <div className="position-relative">
-                                            <input type="tel" className="form-control" id="emergencyContact" placeholder="Numéro en cas d'urgence" />
+                                            <input onChange={(e)=>{setEmergencyContact(e.target.value)}} type="tel" className="form-control" id="emergencyContact" placeholder="Numéro en cas d'urgence" />
                                             <i className="fas fa-phone-square-alt input-icon text-secondary small"></i>
                                         </div>
                                     </div>
                                 </div>
         
                                 
-                                <div id="adminFields" className="d-none test">
+                                <div id="adminFields" className="d-none fields">
                                     <div className="row g-3 mb-3">
                                         <div className="col-md-6">
                                             <label className="form-label fw-semibold">Département *</label>
@@ -323,7 +382,7 @@ function RegisterForm() {
                                         <div className="col-md-6">
                                             <label className="form-label fw-semibold">ID Employé *</label>
                                             <div className="position-relative">
-                                                <input type="text" className="form-control" id="employeeId" placeholder="Numéro d'employé" />
+                                                <input onChange={(e)=>{setEmployeeId(e.target.value)}} type="text" className="form-control" id="employeeId" placeholder="Numéro d'employé" />
                                                 <i className="fas fa-id-badge input-icon text-secondary small"></i>
                                             </div>
                                         </div>
@@ -338,7 +397,7 @@ function RegisterForm() {
                                     </label>
                                 </div>
         
-                                <button type="submit" className="btn btn-primary w-100 py-3 fw-semibold shadow btn-register bg-gradient-primary border-0 transition-all">
+                                <button onClick={sendUser} type="submit" className="btn btn-primary w-100 py-3 fw-semibold shadow btn-register bg-gradient-primary border-0 transition-all">
                                     <i className="fas fa-user-plus me-2"></i>Créer mon compte
                                 </button>
                             </form>

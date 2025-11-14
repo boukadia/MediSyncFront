@@ -1,24 +1,32 @@
 import "../../styles/pages/login.css";
 import PanelLeft from "../layout/PanelLeft";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function LoginForm() {
-   ;
-   const [email,setEmail]=useState("");
-   const [name,setName]=useState("");
-   const [prenom,setPrenom]=useState("");
-   const [telephone,setTelephone]=useState("");
-   const [password,setPassword]=useState("");
-   const [confirmation,setConfirmation]=useState("");
-   
+  const [email, setEmail] = useState("");
+
+  const [password, setPassword] = useState("");
+  // useEffect(()=>{
+
+  // },[email])
+
+  //  function handleLogin() {
+  //   fetch("http://localhost:3000/api/disponibilites/",{
+  //     method:"GET",
+  //     headers:{
+  //       "Content-Type":"application/json"
+  //     }
+
+  //   })
+  //   .then(res=>res.json())
+  //   .then(data=>{
+  //     console.log(data[0].medecin.name)
+  //   })
+  //   .catch(err=>console.log(err))
+
+  //  }
 
   const backgroundButton = (e) => {
-    // if (e.currentTarget.ch) {
-      
-    // } else {
-      
-    // }
-
     const btn = document.querySelectorAll(".user-type-btn");
     btn.forEach(function (bt) {
       bt.classList.remove("active");
@@ -38,69 +46,6 @@ function LoginForm() {
                 Veuillez vous connecter pour continuer
               </p>
             </div>
-<div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3 mb-4">
-  <div className="col">
-    <button
-      onClick={backgroundButton}
-      type="button"
-      className="btn btn-outline-primary w-100 text-center py-3 user-type-btn active"
-    >
-      <i className="fas fa-user-md d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Medecin</small>
-    </button>
-  </div>
-  <div className="col">
-    <button
-      onClick={backgroundButton}
-      type="button"
-      className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
-    >
-      <i className="fas fa-user-injured d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Secretaire</small>
-    </button>
-  </div>
-  <div className="col">
-    <button
-      onClick={backgroundButton}
-      type="button"
-      className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
-    >
-      <i className="fas fa-user-injured d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Patient</small>
-    </button>
-  </div>
-  <div className="col">
-    <button
-      onClick={backgroundButton}
-      type="button"
-      className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
-    >
-      <i className="fas fa-user-injured d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Laboratoire</small>
-    </button>
-  </div>
-  <div className="col">
-    <button
-      onClick={backgroundButton}
-      type="button"
-      className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
-    >
-      <i className="fas fa-user-injured d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Pharmacy</small>
-    </button>
-  </div>
-  <div className="col">
-    <button
-      onClick={backgroundButton}
-      type="button"
-      className="btn btn-outline-primary w-100 text-center py-3 user-type-btn"
-    >
-      <i className="fas fa-user-shield d-block fs-4 mb-2"></i>
-      <small className="fw-semibold">Admin</small>
-    </button>
-  </div>
-</div>
-           
 
             <form>
               <div className="mb-4">
@@ -115,7 +60,7 @@ function LoginForm() {
                     <i className="fas fa-envelope text-primary"></i>
                   </span>
                   <input
-                  onChange={(e) => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     type="email"
                     className="form-control border-start-0"
                     id="email"
@@ -137,6 +82,7 @@ function LoginForm() {
                     <i className="fas fa-lock text-primary"></i>
                   </span>
                   <input
+                    onChange={(e) => setPassword(e.target.value)}
                     type="password"
                     className="form-control border-start-0"
                     id="password"
