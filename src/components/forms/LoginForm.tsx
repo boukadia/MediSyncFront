@@ -1,38 +1,68 @@
+import { jwtDecode } from "jwt-decode";
 import "../../styles/pages/login.css";
 import PanelLeft from "../layout/PanelLeft";
 import { useEffect, useState } from "react";
-
+import { useNavigate } from "react-router-dom";
 function LoginForm() {
   const [email, setEmail] = useState("");
 
   const [password, setPassword] = useState("");
-  // useEffect(()=>{
+  const navigate=useNavigate();
+  
 
-  // },[email])
+   function handleLogin(e:React.MouseEvent<HTMLButtonElement>) {
+    e.preventDefault();
 
-  //  function handleLogin() {
-  //   fetch("http://localhost:3000/api/disponibilites/",{
-  //     method:"GET",
-  //     headers:{
-  //       "Content-Type":"application/json"
-  //     }
 
-  //   })
-  //   .then(res=>res.json())
-  //   .then(data=>{
-  //     console.log(data[0].medecin.name)
-  //   })
-  //   .catch(err=>console.log(err))
 
-  //  }
+    fetch("http://localhost:3000/api/auth/login",{
+      method:"POST",
+      headers:{
+        "Content-Type":"application/json"
+      },
+      body:JSON.stringify({
+        email,
+        password
+    }),
+    
 
-  const backgroundButton = (e) => {
-    const btn = document.querySelectorAll(".user-type-btn");
-    btn.forEach(function (bt) {
-      bt.classList.remove("active");
-    });
-    e.currentTarget.classList.add("active");
-  };
+    })
+    .then((res)=>{
+      if (!res.ok) {
+        throw new Error("Erreur lors de la connexion. Vérifiez vos identifiants.");
+      }
+      return res.json();
+    })
+    .then((data)=>{
+      if (data.token) {
+     const decodedToken = jwtDecode(data.token);
+
+        console.log("Connexion réussie :", decodedToken);
+        // localStorage.setItem("token", data.token);
+        // console.log(data.user.role);
+        
+
+  //       const decodedToken = jwtDecode(data.token);
+  // console.log("Données du token :", decodedToken)
+        // navigate("/dashboard"); 
+      } else {
+        console.error("Aucun token reçu !");
+        alert("Erreur : Aucun token reçu !");
+      }
+      
+  })
+}
+    
+
+  // const backgroundButton = (e) => {
+  //   const btn = document.querySelectorAll(".user-type-btn");
+  //   btn.forEach(function (bt) {
+  //     bt.classList.remove("active");
+  //   });
+  //   e.currentTarget.classList.add("active");
+  // };
+
+
   return (
     <>
       <div className="row g-0">
@@ -113,6 +143,7 @@ function LoginForm() {
 
               <button
                 type="submit"
+                onClick={handleLogin}
                 className="btn btn-primary btn-lg w-100 py-3 fw-bold rounded-3 shadow-sm mb-3"
               >
                 <i className="fas fa-sign-in-alt me-2"></i>Se connecter

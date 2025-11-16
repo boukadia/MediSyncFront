@@ -28,35 +28,35 @@ function RegisterForm() {
             }
 
             
-        } else if(target.textContent === 'Patient') {
+        } else if(target.textContent === 'patient') {
             const patientFields = document.getElementById('patientFields')
             if (patientFields) {
                 patientFields.classList.remove("d-none")
             }
             
             
-        } else if(target.textContent === 'Secretaire') {
+        } else if(target.textContent === 'secretaire') {
             const adminFields = document.getElementById('adminFields')
             if (adminFields) {
                 adminFields.classList.remove("d-none")
             }
             
             
-        } else if(target.textContent === 'Pharmacy') {
+        } else if(target.textContent === 'pharmacy') {
             const pharmacyFields = document.getElementById('pharmacyFields')
             if (pharmacyFields) {
                 pharmacyFields.classList.remove("d-none")
             }
             
             
-        } else if(target.textContent === 'Laboratoire') {
+        } else if(target.textContent === 'laboratoire') {
             const laboratoireFields = document.getElementById('laboratoireFields')
             if (laboratoireFields) {
                 laboratoireFields.classList.remove("d-none")
             }
             
             
-        } else if(target.textContent === 'Admin') {
+        } else if(target.textContent === 'admin') {
             const adminFields = document.getElementById('adminFields')
             if (adminFields) {
                 adminFields.classList.remove("d-none")
@@ -225,31 +225,31 @@ console.log(role);
                                 <div className="col-4">
                                     <div onClick={backgroundButton} className="user-type-card  border border-2 rounded-3 p-3 text-center cursor-pointer bg-white transition-all " >
                                         <i className="fas fa-user-md fs-2 text-secondary d-block mb-2"></i>
-                                        <span className="d-block fw-semibold small text-secondary">Pharmacy</span>
+                                        <span className="d-block fw-semibold small text-secondary">pharmacy</span>
                                     </div>
                                 </div>
                                 <div className="col-4">
                                     <div onClick={backgroundButton} className="user-type-card  border border-2 rounded-3 p-3 text-center cursor-pointer bg-white transition-all " >
                                         <i className="fas fa-user-md fs-2 text-secondary d-block mb-2"></i>
-                                        <span className="d-block fw-semibold small text-secondary">Laboratoire</span>
+                                        <span className="d-block fw-semibold small text-secondary">laboratoire</span>
                                     </div>
                                 </div>
                                 <div className="col-4">
                                     <div onClick={backgroundButton} className="user-type-card  border border-2 rounded-3 p-3 text-center cursor-pointer bg-white transition-all " >
                                         <i className="fas fa-user-md fs-2 text-secondary d-block mb-2"></i>
-                                        <span className="d-block fw-semibold small text-secondary">Secretaire</span>
+                                        <span className="d-block fw-semibold small text-secondary">secretaire</span>
                                     </div>
                                 </div>
                                 <div className="col-4">
                                     <div onClick={backgroundButton} className="user-type-card border border-2 rounded-3 p-3 text-center cursor-pointer bg-white transition-all" >
                                         <i className="fas fa-user-injured fs-2 text-secondary d-block mb-2"></i>
-                                        <span className="d-block fw-semibold small text-secondary">Patient</span>
+                                        <span className="d-block fw-semibold small text-secondary">patient</span>
                                     </div>
                                 </div>
                                 <div className="col-4">
                                     <div onClick={backgroundButton} className="user-type-card border border-2 rounded-3 p-3 text-center cursor-pointer bg-white transition-all" >
                                         <i className="fas fa-user-shield fs-2 text-secondary d-block mb-2"></i>
-                                        <span className="d-block fw-semibold small text-secondary">Admin</span>
+                                        <span className="d-block fw-semibold small text-secondary">admin</span>
                                     </div>
                                 </div>
                             </div>
