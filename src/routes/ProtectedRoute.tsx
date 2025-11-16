@@ -2,11 +2,11 @@ import { jwtDecode } from "jwt-decode";
 import { Navigate } from "react-router-dom";
 
 // ProtectedRoute
-type ProtectedRouteProps ={
-  allowedRoule: string;
-  children: React.ReactElement;
-}
-export default function ProtectedRoute({props:ProtectedRouteProps}){
+// type ProtectedRouteProps ={
+//   allowedRoule: string;
+//   children: React.ReactElement;
+// }
+ function ProtectedRoute({children, allowedRole}: {children: React.ReactElement, allowedRole:string}) {
     const token = localStorage.getItem("token");
 if (!token) {
     return <Navigate to="/login" />;
@@ -31,3 +31,4 @@ if (!token) {
     return <Navigate to="/login" />;
   }
 }
+export default ProtectedRoute;

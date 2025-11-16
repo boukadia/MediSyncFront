@@ -5,6 +5,8 @@ import Register from './pages/auth/Register'
 import PatientDashboard from './pages/dashboard/PatientDashboard'
 import Home from './pages/home'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ProtectedRoute from './routes/ProtectedRoute'
+import Unothorized from './pages/Unothorized'
 
 function App() {
 
@@ -15,10 +17,13 @@ function App() {
       <Route path='/' element={<Home />}/>
       <Route path='/login' element={<Login />}/>
       <Route path='/register' element={<Register />}/>
-      {/* <Route path='/dashboard' element={<ProtectedRoute/> */}
-
-    {/* }
-    /> */}
+      <Route path="/unothorized" element={<Unothorized />} />
+      <Route path='/dashboard/patient' element={
+        <ProtectedRoute allowedRole={'patient'}>
+            <PatientDashboard />
+        </ProtectedRoute>
+        }
+      />
 
     </Routes>
     
