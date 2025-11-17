@@ -1,11 +1,14 @@
 
 // RegisterForm
+import { useNavigate } from 'react-router-dom';
 import '../../styles/pages/register.css';
 import PanelLeft from '../layout/PanelLeft';
 import { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
+import { registerApi } from '../../api/auth.api';
 
 function RegisterForm() {
+    const navigate=useNavigate();
     const backgroundButton = (e: React.MouseEvent<HTMLDivElement>) => {
         const target = e.currentTarget.children[1] as HTMLElement;
         const fields = document.querySelectorAll(".fields")
@@ -98,7 +101,7 @@ function RegisterForm() {
       
     // },[email])
     // const [passwordMatch, setPasswordMatch] = useState(true);
-
+    const [errorMessage, setErrorMessage] = useState("");
      const [showModal, setShowModal] = useState(false);
 
     const checkPasswordMatch = () => {
@@ -129,7 +132,7 @@ useEffect(() => {
     
 console.log(role);
 
-    function sendUser(e){
+    const sendUser =async (e: React.FormEvent)=>{
         e.preventDefault();
         const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -155,39 +158,44 @@ console.log(role);
     }
     console.log("eeee");
     
-       fetch("http://localhost:3000/api/auth/register",{
-        method:'POST',
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-            email:email,
-            password:password,
-            name:name,
-            address:address,
-            PharmacyName:PharmacyName,
-            phone:phone,
-            role:role,
-            specialite:specialite,
-
+               await registerApi(
+            // Common fields
+            email,
+            password,
+            name,
+            phone,
+            role,
             
-            // confirmPassword:confirmPassword,
-            numLicence:numLicence,
-            anneExperience:anneExperience,
-            ContactUrgence:ContactUrgence,
-            // employeeId:employeeId,
-            // responsable:responsable,
-            // houresTravail:horaires
-            dateNaissance:dateNaissance
+            // Doctor fields
+            specialite,
+            numLicence,
+            anneExperience,
+            
+            // Patient fields
+            dateNaissance,
+            Sexe,
+            ContactUrgence,
+            
+            // Pharmacy fields
+            PharmacyName,
+            
+            // Laboratoire fields
+            laboratoireName,
+            responsable,
+            horaires,
+            
+            // Admin/Secretary fields
+            employeeId,
+            
+            // Common address field
+            address,
+            
+            // Navigation and error handling
+            navigate,
+            setErrorMessage
+        );
+    
 
-        }),
-        
-    })
-    .then((res)=>res.json())
-    .then((data)=>{
-      console.log(data)
-    })
-    .catch((err)=>console.log(err))
       
      
   }
