@@ -2,11 +2,12 @@
 // import RegisterForm from './components/forms/RegisterForm'
 import Login from './pages/auth/Login'
 import Register from './pages/auth/Register'
-import PatientDashboard from './pages/dashboard/PatientDashboard'
 import Home from './pages/home'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './routes/ProtectedRoute'
 import Unothorized from './pages/Unothorized'
+import PatientDashboard from './pages/dashboard/patient/PatientDashboard.tsx'
+import Appointment from './pages/dashboard/patient/Appointment.tsx'
 
 function App() {
 
@@ -18,6 +19,7 @@ function App() {
       <Route path='/login' element={<Login />}/>
       <Route path='/register' element={<Register />}/>
       <Route path="/unothorized" element={<Unothorized />} />
+      <Route path="/dashboard/patient/appointments" element={<Appointment />} />  
       <Route path='/dashboard/patient' element={
         <ProtectedRoute allowedRole={'patient'}>
             <PatientDashboard />

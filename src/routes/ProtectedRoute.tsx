@@ -47,12 +47,10 @@ function ProtectedRoute({ children, allowedRole }: { children: React.ReactElemen
     return <div>Chargement...</div>;
   }
 
-  // Rediriger vers /login si le token est invalide ou absent
   if (!isValid) {
     return <Navigate to="/login" />;
   }
 
-  // Afficher le composant enfant si tout est valide
   return children;
 }
 

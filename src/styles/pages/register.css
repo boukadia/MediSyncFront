@@ -12,7 +12,7 @@
         }
 
         /* Custom gradient background - cannot be replaced with Bootstrap */
-        body::before {
+        .register-page-body::before {
             content: "";
             position: absolute;
             width: 100%;
@@ -21,6 +21,11 @@
             background-size: 40px 40px;
             animation: backgroundMove 15s linear infinite;
             z-index: 0;
+        }
+        
+        .register-page-body {
+            min-height: 100vh;
+            position: relative;
         }
 
         @keyframes backgroundMove {

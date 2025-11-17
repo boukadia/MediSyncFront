@@ -1,0 +1,43 @@
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 250px;
+}
+
+.sidebar .nav-link {
+    color: rgba(255, 255, 255, 0.8);
+    padding: 12px 20px;
+    transition: all 0.3s;
+    border-radius: 8px;
+    margin: 5px 10px;
+}
+
+.sidebar .nav-link:hover,
+.sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.main-content {
+    margin-right: 250px;
+    padding: 20px;
+}
+
+.appointment-card {
+    transition: all 0.3s;
+    cursor: pointer;
+}
+
+.appointment-card:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+}

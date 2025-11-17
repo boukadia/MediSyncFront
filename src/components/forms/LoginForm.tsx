@@ -1,8 +1,9 @@
 import { jwtDecode } from "jwt-decode";
 import "../../styles/pages/login.css";
 import PanelLeft from "../layout/PanelLeft";
-import { use, useEffect, useState } from "react";
+import {   useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { loginApi } from "../../api/auth.api";
 function LoginForm() {
   const [email, setEmail] = useState("");
 const [errorMessage, setErrorMessage] = useState("");
@@ -11,75 +12,12 @@ const [errorMessage, setErrorMessage] = useState("");
   
 console.log(errorMessage);
 
-   function handleLogin(e:React.MouseEvent<HTMLButtonElement>) {
+  const   handleLogin=async (e:React.MouseEvent<HTMLButtonElement>)=> {
     e.preventDefault();
+ await loginApi(email,password,navigate,setErrorMessage);
 
 
-
-    fetch("http://localhost:3000/api/auth/login",{
-      method:"POST",
-      headers:{
-        "Content-Type":"application/json"
-      },
-      body:JSON.stringify({
-        email,
-        password
-    }),
-    
-
-    })
-    .then((res)=>{
-      if (!res.ok) {
-        return res.json().then((data) => {
-          throw new Error(data.message);
-        });
-      }
-      return res.json();
-    })
-    .then((data)=>{
-      if (data.token) {
-     const decodedToken = jwtDecode(data.token);
-         setErrorMessage("");
-
-
-        console.log("Connexion réussie :", decodedToken);
-        localStorage.setItem("token", data.token);
-        // console.log(data.user.role);
-        
-
-        // const decodedToken = jwtDecode(data.token);
-        const userRole:string = (decodedToken as {role:string}).role;
-        if (userRole==='patient') {
-          navigate("/dashboard/patient");
-          
-        } else if(userRole==='doctor'){
-          navigate("/dashboard/doctor");
-        }
-        else if(userRole==='admin'){
-          navigate("/dashboard/admin");
-        }
-        else if(userRole==='secretaire'){
-          navigate("/dashboard/secretaire");
-        }
-        else if (userRole==="pharmacy") {
-          navigate("/dashboard/pharmacy");
-        }
-        else if (userRole==="laboratoire") {
-          navigate("/dashboard/laboratoire");
-        }
-        
-        // navigate("/dashboard"); 
-      } else {
-        console.error("Aucun token reçu !");
-        alert("Erreur : Aucun token reçu !");
-      }
-      
-  })
-  .catch((error) => {
-      // Mettre à jour le message d'erreur
-      console.error("Erreur :", error.message);
-      setErrorMessage(error.message);
-    });
+ 
 }
     
 

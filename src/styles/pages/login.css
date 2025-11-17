@@ -14,13 +14,14 @@
 }
 
 /* Background with animation */
-body {
+.login-page-body {
     background: linear-gradient(135deg, #1e3c72 0%, #2a5298 50%, #7e22ce 100%);
     position: relative;
     overflow-x: hidden;
+    min-height: 100vh;
 }
 
-body::before {
+.login-page-body::before {
     content: "";
     position: fixed;
     top: 0;
