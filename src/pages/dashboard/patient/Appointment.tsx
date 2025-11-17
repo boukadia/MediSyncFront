@@ -1,10 +1,76 @@
-import React, { useEffect, useState } from 'react';
+import React, { use, useEffect, useState } from 'react';
 import SideBare from '../../../components/dashboard/Patient/SideBare';
 import '../../../styles/pages/appointment.css';
+import { jwtDecode } from 'jwt-decode';
+import { getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
 
 function Appointment() {
     const [showModal, setShowModal] = useState(false);
-   
+    const [errorMessage,setErrorMessage]=useState('');
+    const [loading, setLoading] = useState(false);
+    const [myAppointments,setMyAppointments]=useState<Appointment[]>([])
+    const getPatientId = () => {
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decoded: any = jwtDecode(token);
+            return decoded.userId || decoded.id;
+        }
+        return null;
+    };
+
+    
+    // Function to format date
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const options: Intl.DateTimeFormatOptions = {
+            weekday: 'long',
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+        };
+        return date.toLocaleDateString('fr-FR', options);
+    };
+
+    // Function to get day number
+    const getDayNumber = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.getDate();
+    };
+
+    // Function to get month name
+    const getMonthName = (dateString: string) => {
+        const date = new Date(dateString);
+        const options: Intl.DateTimeFormatOptions = { month: 'long' };
+        return date.toLocaleDateString('fr-FR', options);
+    };
+
+    // Function to get year
+    const getYear = (dateString: string) => {
+        const date = new Date(dateString);
+        return date.getFullYear();
+    };
+    useEffect(()=>{
+    const patientId = getPatientId();
+    const  fetchAppointments=async()=>{
+        const appointments= await getAppointmentsApi(setErrorMessage)
+        setMyAppointments(appointments);
+        setLoading(false);
+    }
+    fetchAppointments();
+  
+    
+
+
+    },[showModal])
+//       useEffect(() => {
+//     console.log('myAppointments state updated:', myAppointments);
+// }, [myAppointments]);
+
+console.log(myAppointments);
+
+     
+
+
 
     return (
         <div>
@@ -71,26 +137,27 @@ function Appointment() {
                     {/* Upcoming Appointments */}
                     <div className="tab-pane fade show active" id="upcoming">
                         <div className="row g-4">
+                            {myAppointments.map((appointment)=>(
 
-                            <div className="col-md-6">
+                            <div className="col-md-6" key={appointment._id}>
                                 <div className="card appointment-card shadow-sm">
                                     <div className="card-body">
                                         <div className="d-flex gap-3">
                                             <div className="bg-primary text-white rounded p-3 text-center" style={{ minWidth: '80px' }}>
-                                                <div className="fw-bold" style={{ fontSize: '28px' }}>10</div>
-                                                <small>Février</small>
-                                                <div className="mt-2"><small>2024</small></div>
+                                                <div className="fw-bold" style={{ fontSize: '28px' }}>{getDayNumber(appointment.date)}</div>
+                                                <small>{getMonthName(appointment.date)}</small>
+                                                <div className="mt-2"><small>{getYear(appointment.date)}</small></div>
                                             </div>
                                             <div className="flex-grow-1">
                                                 <div className="d-flex justify-content-between align-items-start mb-2">
-                                                    <h5 className="mb-0">Dr. Fatima Zahra</h5>
+                                                    <h5 className="mb-0">{appointment.doctorId?.name}</h5>
                                                     <span className="badge bg-info">Confirmé</span>
                                                 </div>
                                                 <p className="text-muted mb-1">
-                                                    <i className="fas fa-eye me-2"></i>Ophtalmologie
+                                                    {/* <i className="fas fa-eye me-2"></i>{appointment.date} */}
                                                 </p>
                                                 <p className="text-muted mb-1">
-                                                    <i className="far fa-clock me-2"></i>11:00 AM - 11:30 AM
+                                                    {/* <i className="far fa-clock me-2"></i>{appointment.creneau} */}
                                                 </p>
                                                 <p className="text-muted mb-3">
                                                     <i className="fas fa-map-marker-alt me-2"></i>Centre Médical Vision, Marrakech
@@ -111,6 +178,7 @@ function Appointment() {
                                     </div>
                                 </div>
                             </div>
+                              ))} 
                         </div>
                     </div>
 

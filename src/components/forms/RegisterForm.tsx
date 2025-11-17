@@ -91,7 +91,7 @@ function RegisterForm() {
     const [PharmacyName,setPharmacyName]=useState("");
     const [laboratoireName,setLaboratoireName]=useState("");
     const [dateNaissance,setDateNaissance]=useState("");
-    const [Sexe,setSexe]=useState("");
+    const [sexe,setSexe]=useState("");
      const [ContactUrgence,setContactUrgence]=useState("");
      // Additional states for UI fields not in schema
      const [responsable,setResponsable]=useState("");
@@ -173,7 +173,7 @@ console.log(role);
             
             // Patient fields
             dateNaissance,
-            Sexe,
+            sexe,
             ContactUrgence,
             
             // Pharmacy fields
@@ -419,7 +419,7 @@ console.log(role);
                                         <div className="col-md-6">
                                             <label className="form-label fw-semibold">Sexe *</label>
                                             <div className="position-relative">
-                                                <select className="form-select" id="Sexe" name="Sexe" onChange={(e)=>{setSexe(e.target.value)}}>
+                                                <select className="form-select" id="sexe" name="sexe" onChange={(e)=>{setSexe(e.target.value)}}>
                                                     <option value="">Sélectionner</option>
                                                     <option value="male">Homme</option>
                                                     <option value="female">Femme</option>

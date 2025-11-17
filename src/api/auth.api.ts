@@ -43,7 +43,7 @@ export async function loginApi(email: string, password: string,navigate:any,setE
 
         console.log("Connexion réussie :", decodedToken);
         localStorage.setItem("token", data.token);
-        // console.log(data.user.role);
+        console.log(data.user.id);
         
 
         // const decodedToken = jwtDecode(data.token);
@@ -95,7 +95,7 @@ export async function registerApi( // Common fields for all roles
   
   // Patient fields
   dateNaissance?: string,
-  Sexe?: string,
+  sexe?: string,
   ContactUrgence?: string,
   
   // Pharmacy fields
@@ -116,42 +116,60 @@ export async function registerApi( // Common fields for all roles
   setErrorMessage: (message: string) => void
 
   ) {
-     fetch("http://localhost:3000/api/auth/register",{
-        method:'POST',
-        headers:{
-          "Content-Type":"application/json"
+    try {
+      console.log("Sending registration data...");
+      
+      const res = await fetch(`${BASE}/auth/register`, {
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json"
         },
-        body:JSON.stringify({
-            email:email,
-            password:password,
-            name:name,
-            address:address,
-            PharmacyName:PharmacyName,
-            phone:phone,
-            role:role,
-            specialite:specialite,
+        body: JSON.stringify({
+          // Common fields
+          email,
+          password,
+          name,
+          phone,
+          role,
+          
+          // Optional fields (only included if provided)
+          ...(address && { address }),
+          ...(specialite && { specialite }),
+          ...(numLicence && { numLicence }),
+          ...(anneExperience && { anneExperience }),
+          ...(dateNaissance && { dateNaissance }),
+          ...(sexe && { sexe }),
+          ...(ContactUrgence && { ContactUrgence }),
+          ...(PharmacyName && { PharmacyName }),
+          ...(laboratoireName && { laboratoireName }),
+          ...(responsable && { responsable }),
+          ...(horaires && { horaires }),
+          ...(employeeId && { employeeId })
+        })
+      });
 
-            
-            // confirmPassword:confirmPassword,
-            numLicence:numLicence,
-            anneExperience:anneExperience,
-            ContactUrgence:ContactUrgence,
-            // employeeId:employeeId,
-            // responsable:responsable,
-            // houresTravail:horaires
-            dateNaissance:dateNaissance
+      if (!res.ok) {
+        const data = await res.json();
+        throw new Error(data.message || "Erreur lors de l'inscription");
+      }
 
-        }),
-        
-    })
-    .then((res)=>res.json())
-    .then((data)=>{
-      console.log(data)
-          setErrorMessage("");
-          alert("Inscription réussie! Vous pouvez maintenant vous connecter.");
-            navigate("/login");
-    })
-    .catch((err)=>{console.log(err); setErrorMessage(err.message || "Erreur lors de l'inscription");})
+      const data = await res.json();
+      console.log("Inscription réussie :", data);
+      
+      // Clear error message on success
+      setErrorMessage("");
+      
+      // Show success message
+      alert("Inscription réussie! Vous pouvez maintenant vous connecter.");
+      
+      // Navigate to login page
+      navigate("/login");
+      
+    } catch (error: unknown) {
+      const errorMessage = error instanceof Error ? error.message : "Erreur lors de l'inscription";
+      console.error("Erreur lors de l'inscription :", errorMessage);
+      setErrorMessage(errorMessage);
+    }
 }
 
 export async function validateApi(token: string) {
