@@ -1,7 +1,8 @@
-import React, { use, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import SideBare from '../../../components/dashboard/Patient/SideBare';
 import '../../../styles/pages/appointment.css';
 import { jwtDecode } from 'jwt-decode';
+// import type { Appointment } from '../../../api/appointment.api';
 import { getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
 
 function Appointment() {

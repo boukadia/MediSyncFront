@@ -8,7 +8,6 @@ type Appointment= {
     name:string
     _id:string
     address:string
-    
   };
   date: string;
   creneau: {

@@ -8,6 +8,7 @@ import ProtectedRoute from './routes/ProtectedRoute'
 import Unothorized from './pages/Unothorized'
 import PatientDashboard from './pages/dashboard/patient/PatientDashboard.tsx'
 import Appointment from './pages/dashboard/patient/Appointment.tsx'
+import Prescriptions from './pages/dashboard/patient/Prescription.tsx'
 
 function App() {
 
@@ -20,6 +21,7 @@ function App() {
       <Route path='/register' element={<Register />}/>
       <Route path="/unothorized" element={<Unothorized />} />
       <Route path="/dashboard/patient/appointments" element={<Appointment />} />  
+      <Route path='/dashboard/patient/prescriptions' element={<Prescriptions />}/>
       <Route path='/dashboard/patient' element={
         <ProtectedRoute allowedRole={'patient'}>
             <PatientDashboard />
