@@ -80,11 +80,7 @@ console.log(myPrescriptions);
    
     
 
-    const toRenew = draftPrescriptions.filter(function (prescription) {
-        return prescription.medications?.some(function (medicine) {
-            return (medicine.remainingDays || 0) <= 3;
-        });
-    }).length;
+   
 
     return (
         <div>
