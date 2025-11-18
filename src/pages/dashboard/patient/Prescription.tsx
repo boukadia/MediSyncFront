@@ -109,9 +109,9 @@ console.log(myPrescriptions);
                     <div className="col-md-3">
                         <div className="card shadow-sm border-start border-success border-4">
                             <div className="card-body">
-                                <h6 className="text-muted">Ordonnances Actives</h6>
+                                <h6 className="text-muted">Ordonnances Signed</h6>
                                 <h3>{draftPrescriptions.length}</h3>
-                                <small className="text-success">En cours de traitement</small>
+                                {/* <small className="text-success">En cours de traitement</small> */}
                             </div>
                         </div>
                     </div>
@@ -152,19 +152,19 @@ console.log(myPrescriptions);
                             data-bs-toggle="tab"
                             data-bs-target="#active"
                         >
-                            <i className="fas fa-pills me-2"></i>Actives ({draftPrescriptions.length})
+                            <i className="fas fa-pills me-2"></i>Draft ({draftPrescriptions.length})
                         </button>
                     </li>
                     <li className="nav-item" role="presentation">
                         <button
                             className="nav-link"
                             data-bs-toggle="tab"
-                            data-bs-target="#expired"
+                            data-bs-target="#signed"
                         >
-                            <i className="fas fa-history me-2"></i>Terminées ({signedPrescriptions.length})
+                            <i className="fas fa-history me-2"></i>Signed ({signedPrescriptions.length})
                         </button>
                     </li>
-                    <li className="nav-item" role="presentation">
+                    {/* <li className="nav-item" role="presentation">
                         <button
                             className="nav-link"
                             data-bs-toggle="tab"
@@ -172,7 +172,7 @@ console.log(myPrescriptions);
                         >
                             <i className="fas fa-bell me-2"></i>Rappels
                         </button>
-                    </li>
+                    </li> */}
                 </ul>
 
                 {/* Tab Content */}
@@ -199,7 +199,7 @@ console.log(myPrescriptions);
                                                 <div className="d-flex justify-content-between align-items-center">
                                                     <div>
                                                         <h5 className="mb-0">{prescription.doctorId?.name}</h5>
-                                                        <small>{prescription.doctorId?.specialty}</small>
+                                                        <small>{prescription.doctorId.name}</small>
                                                     </div>
                                                     <span className={`badge ${getBadgeColor(prescription.status)}`}>
                                                         {prescription.status === 'draft' ? 'draft' : prescription.status}
@@ -210,17 +210,17 @@ console.log(myPrescriptions);
                                                 <div className="mb-3">
                                                     <small className="text-muted">
                                                         <i className="fas fa-calendar me-2"></i>
-                                                        Date: {formatDate(prescription.date)}
+                                                        Date: {formatDate(prescription.createdAt)}
                                                     </small>
                                                 </div>
 
-                                                {/* Medicines List */}
-                                                {prescription.medicines?.map((medicine, medIndex) => (
+                                                {/* Medicaments List */}
+                                                {prescription.medications?.map((medicine, medIndex) => (
                                                     <div className="medicine-item" key={medIndex}>
                                                         <div className="d-flex justify-content-between align-items-start mb-2">
                                                             <div>
                                                                 <h6 className="mb-1">{medicine.name} {medicine.dosage}</h6>
-                                                                <small className="text-muted">{medicine.frequency}</small>
+                                                                <small className="text-muted">{medicine.instructions}</small>
                                                             </div>
                                                             <span className={`badge ${
                                                                 (medicine.remainingDays || 0) <= 3 ? 'bg-warning text-dark' : 'bg-success'
@@ -228,7 +228,7 @@ console.log(myPrescriptions);
                                                                 {medicine.duration} jours
                                                             </span>
                                                         </div>
-                                                        {medicine.progress !== undefined && (
+                                                        {/* {medicine.progress !== undefined && (
                                                             <>
                                                                 <div className="progress mb-2" style={{ height: '5px' }}>
                                                                     <div
@@ -244,15 +244,15 @@ console.log(myPrescriptions);
                                                                     Reste: {medicine.remainingDays} jours
                                                                 </small>
                                                             </>
-                                                        )}
+                                                        )} */}
                                                     </div>
                                                 ))}
 
-                                                {/* Warnings */}
-                                                {prescription.warnings && (
-                                                    <div className="alert alert-warning mb-3 mt-3">
-                                                        <i className="fas fa-exclamation-triangle me-2"></i>
-                                                        <strong>Important:</strong> {prescription.warnings}
+                                                {/* Notes */}
+                                                {prescription.notes && (
+                                                    <div className="alert alert-info mb-3 mt-3">
+                                                        <i className="fas fa-sticky-note me-2"></i>
+                                                        <strong>Notes:</strong> {prescription.notes}
                                                     </div>
                                                 )}
 
@@ -276,52 +276,102 @@ console.log(myPrescriptions);
                         )}
                     </div>
 
-                    {/* Expired/Completed Prescriptions */}
-                    <div className="tab-pane fade" id="expired">
+                    {/* Signed Prescriptions */}
+                    <div className="tab-pane fade" id="signed">
                         {signedPrescriptions.length === 0 ? (
                             <div className="alert alert-info">
                                 <i className="fas fa-info-circle me-2"></i>
-                                Aucune ordonnance terminée pour le moment
+                                Aucune ordonnance signed pour le moment
                             </div>
                         ) : (
-                            <div className="card shadow-sm">
-                                <div className="card-body">
-                                    <div className="table-responsive">
-                                        <table className="table table-hover">
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Médecin</th>
-                                                    <th>Médicaments</th>
-                                                    <th>Durée</th>
-                                                    <th>Actions</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {signedPrescriptions.map((prescription) => (
-                                                    <tr key={prescription._id}>
-                                                        <td>{formatDate(prescription.date)}</td>
-                                                        <td>{prescription.doctorId?.name}</td>
-                                                        <td>
-                                                            {prescription.medicines?.map((m) => m.name).join(', ')}
-                                                        </td>
-                                                        <td>
-                                                            {prescription.medicines?.[0]?.duration || 0} jours
-                                                        </td>
-                                                        <td>
-                                                            <button className="btn btn-sm btn-outline-primary me-2">
-                                                                <i className="fas fa-eye"></i> Voir
-                                                            </button>
-                                                            <button className="btn btn-sm btn-outline-success">
-                                                                <i className="fas fa-redo"></i> Renouveler
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                            <div className="row g-4">
+                                {signedPrescriptions.map((prescription, index) => (
+                                    <div className="col-md-6" key={prescription._id}>
+                                        <div className="card prescription-card shadow-sm">
+                                            <div className={`card-header ${getHeaderColor(index)} text-white`}>
+                                                <div className="d-flex justify-content-between align-items-center">
+                                                    <div>
+                                                        <h5 className="mb-0">{prescription.doctorId?.name}</h5>
+                                                        <small>{prescription.doctorId.name}</small>
+                                                    </div>
+                                                    <span className={`badge ${getBadgeColor(prescription.status)}`}>
+                                                        {prescription.status === 'draft' ? 'draft' : prescription.status}
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div className="card-body">
+                                                <div className="mb-3">
+                                                    <small className="text-muted">
+                                                        <i className="fas fa-calendar me-2"></i>
+                                                        Date: {formatDate(prescription.createdAt)}
+                                                    </small>
+                                                </div>
+
+                                                {/* Medicaments List */}
+                                                {prescription.medications?.map((medicine, medIndex) => (
+                                                    <div className="medicine-item" key={medIndex}>
+                                                        <div className="d-flex justify-content-between align-items-start mb-2">
+                                                            <div>
+                                                                <h6 className="mb-1">{medicine.name} {medicine.dosage}</h6>
+                                                                <small className="text-muted">{medicine.instructions}</small>
+                                                            </div>
+                                                            <span className={`badge ${
+                                                                (medicine.remainingDays || 0) <= 3 ? 'bg-warning text-dark' : 'bg-success'
+                                                            }`}>
+                                                                {medicine.duration} jours
+                                                            </span>
+                                                        </div>
+                                                        {/* {medicine.progress !== undefined && (
+                                                            <>
+                                                                <div className="progress mb-2" style={{ height: '5px' }}>
+                                                                    <div
+                                                                        className={`progress-bar ${
+                                                                            medicine.progress < 40 ? 'bg-warning' : 'bg-success'
+                                                                        }`}
+                                                                        style={{ width: `${medicine.progress}%` }}
+                                                                    ></div>
+                                                                </div>
+                                                                <small className={
+                                                                    (medicine.remainingDays || 0) <= 3 ? 'text-warning' : 'text-muted'
+                                                                }>
+                                                                    Reste: {medicine.remainingDays} jours
+                                                                </small>
+                                                            </>
+                                                        )} */}
+                                                    </div>
                                                 ))}
-                                            </tbody>
-                                        </table>
+
+                                                {/* Warnings */}
+                                                {/* {prescription.warnings && (
+                                                    <div className="alert alert-warning mb-3 mt-3">
+                                                        <i className="fas fa-exclamation-triangle me-2"></i>
+                                                        <strong>Important:</strong> {prescription.warnings}
+                                                    </div>
+                                                )} */}
+                                                 {/* Notes */}
+                                                {prescription.notes && (
+                                                    <div className="alert alert-info mb-3 mt-3">
+                                                        <i className="fas fa-sticky-note me-2"></i>
+                                                        <strong>Notes:</strong> {prescription.notes}
+                                                    </div>
+                                                )}
+
+                                                {/* Action Buttons */}
+                                                <div className="d-flex gap-2 mt-3">
+                                                    <button className="btn btn-sm btn-primary">
+                                                        <i className="fas fa-print me-1"></i>Imprimer
+                                                    </button>
+                                                    <button className="btn btn-sm btn-outline-primary">
+                                                        <i className="fas fa-download me-1"></i>Télécharger
+                                                    </button>
+                                                    <button className="btn btn-sm btn-outline-success">
+                                                        <i className="fas fa-redo me-1"></i>Renouveler
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
+                                ))}
                             </div>
                         )}
                     </div>
@@ -330,14 +380,14 @@ console.log(myPrescriptions);
                     <div className="tab-pane fade" id="reminders">
                         <div className="row g-3">
                             {draftPrescriptions.slice(0, 3).map((prescription, index) => (
-                                prescription.medicines?.slice(0, 1).map((medicine, medIndex) => (
+                                prescription.medications?.slice(0, 1).map((medication, medIndex) => (
                                     <div className="col-md-4" key={`${prescription._id}-${medIndex}`}>
                                         <div className="card shadow-sm">
                                             <div className="card-body text-center">
                                                 <i className={`fas fa-bell fa-3x ${
                                                     index === 0 ? 'text-primary' : index === 1 ? 'text-warning' : 'text-success'
                                                 } mb-3`}></i>
-                                                <h5>{medicine.name}</h5>
+                                                <h5>{medication.name}</h5>
                                                 <p className="text-muted">Prochain rappel:</p>
                                                 <h6 className={
                                                     index === 0 ? 'text-primary' : index === 1 ? 'text-warning' : 'text-success'

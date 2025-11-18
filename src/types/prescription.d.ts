@@ -3,7 +3,7 @@
 export interface Medication {
     name: string;
     dosage: string;
-    frequency: string;
+    // frequency: string;
     duration: number;
     instructions?: string;
     remainingDays?: number;
@@ -16,7 +16,7 @@ export interface Prescription {
     doctorId: {
         _id: string;
         name: string;
-        // specialty: string;
+        specialite: string;
     };
     // consultationId:{
     //     diagnostic:string
