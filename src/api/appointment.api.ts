@@ -7,6 +7,8 @@ type Appointment= {
   doctorId: {
     name:string
     _id:string
+    address:string
+    
   };
   date: string;
   creneau: {

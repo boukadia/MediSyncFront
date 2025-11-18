@@ -61,15 +61,18 @@ function Appointment() {
     
 
 
-    },[showModal])
+    },[])
 //       useEffect(() => {
 //     console.log('myAppointments state updated:', myAppointments);
 // }, [myAppointments]);
 
-console.log(myAppointments);
+// console.log(myAppointments);
 
-     
-
+     const upComingAppointments=myAppointments.filter(function(appointment){return appointment.status==="confirmed"})
+     const concelledAppointments=myAppointments.filter(function(appointment){return appointment.status==='cancelled'})
+     const pastAppointments=myAppointments.filter((appointment)=>appointment.status==="completed")
+console.log()
+console.log(concelledAppointments);
 
 
     return (
@@ -137,7 +140,7 @@ console.log(myAppointments);
                     {/* Upcoming Appointments */}
                     <div className="tab-pane fade show active" id="upcoming">
                         <div className="row g-4">
-                            {myAppointments.map((appointment)=>(
+                            {upComingAppointments.map((appointment)=>(
 
                             <div className="col-md-6" key={appointment._id}>
                                 <div className="card appointment-card shadow-sm">
@@ -151,7 +154,7 @@ console.log(myAppointments);
                                             <div className="flex-grow-1">
                                                 <div className="d-flex justify-content-between align-items-start mb-2">
                                                     <h5 className="mb-0">{appointment.doctorId?.name}</h5>
-                                                    <span className="badge bg-info">Confirmé</span>
+                                                    <span className="badge bg-info">{appointment.status}</span>
                                                 </div>
                                                 <p className="text-muted mb-1">
                                                     {/* <i className="fas fa-eye me-2"></i>{appointment.date} */}
@@ -160,7 +163,7 @@ console.log(myAppointments);
                                                     {/* <i className="far fa-clock me-2"></i>{appointment.creneau} */}
                                                 </p>
                                                 <p className="text-muted mb-3">
-                                                    <i className="fas fa-map-marker-alt me-2"></i>Centre Médical Vision, Marrakech
+                                                    <i className="fas fa-map-marker-alt me-2"></i>{appointment.doctorId?.address}
                                                 </p>
                                                 <div className="d-flex gap-2">
                                                     <button className="btn btn-sm btn-outline-primary">
@@ -184,46 +187,105 @@ console.log(myAppointments);
 
                     {/* Past Appointments */}
                     <div className="tab-pane fade " id="past">
-                        <div className="row g-4">
-                            <div className="col-md-6">
-                                <div className="card shadow-sm">
+                         <div className="row g-4">
+                            {myAppointments.map((appointment)=>(
+
+                            <div className="col-md-6" key={appointment._id}>
+                                <div className="card appointment-card shadow-sm">
                                     <div className="card-body">
                                         <div className="d-flex gap-3">
-                                            <div className="bg-secondary text-white rounded p-3 text-center" style={{ minWidth: '80px' }}>
-                                                <div className="fw-bold" style={{ fontSize: '28px' }}>15</div>
-                                                <small>Décembre</small>
-                                                <div className="mt-2"><small>2023</small></div>
+                                            <div className="bg-primary text-white rounded p-3 text-center" style={{ minWidth: '80px' }}>
+                                                <div className="fw-bold" style={{ fontSize: '28px' }}>{getDayNumber(appointment.date)}</div>
+                                                <small>{getMonthName(appointment.date)}</small>
+                                                <div className="mt-2"><small>{getYear(appointment.date)}</small></div>
                                             </div>
                                             <div className="flex-grow-1">
                                                 <div className="d-flex justify-content-between align-items-start mb-2">
-                                                    <h5 className="mb-0">Dr. Khalid Youssef</h5>
-                                                    <span className="badge bg-success">Complété</span>
+                                                    <h5 className="mb-0">{appointment.doctorId?.name}</h5>
+                                                    <span className="badge bg-info">{appointment.status}</span>
                                                 </div>
                                                 <p className="text-muted mb-1">
-                                                    <i className="fas fa-stethoscope me-2"></i>Médecine Interne - Suivi
+                                                    {/* <i className="fas fa-eye me-2"></i>{appointment.date} */}
+                                                </p>
+                                                <p className="text-muted mb-1">
+                                                    {/* <i className="far fa-clock me-2"></i>{appointment.creneau} */}
                                                 </p>
                                                 <p className="text-muted mb-3">
-                                                    <i className="far fa-clock me-2"></i>5:00 PM
+                                                    <i className="fas fa-map-marker-alt me-2"></i>{appointment.doctorId?.address}
                                                 </p>
-                                                <button className="btn btn-sm btn-outline-primary">
-                                                    <i className="fas fa-redo me-1"></i>Reprendre RDV
-                                                </button>
+                                                <div className="d-flex gap-2">
+                                                    <button className="btn btn-sm btn-outline-primary">
+                                                        <i className="fas fa-edit me-1"></i>Modifier
+                                                    </button>
+                                                    <button className="btn btn-sm btn-outline-danger">
+                                                        <i className="fas fa-times me-1"></i>Annuler
+                                                    </button>
+                                                    <button className="btn btn-sm btn-outline-success">
+                                                        <i className="fas fa-directions me-1"></i>Itinéraire
+                                                    </button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-                        
+                              ))} 
                         </div>
                     </div>
 
                     {/* Cancelled Appointments */}
                     <div className="tab-pane fade" id="cancelled">
-                        <div className="alert alert-info">
+                        {concelledAppointments.length===0 ? (
+                            <div className="alert alert-info">
                             <i className="fas fa-info-circle me-2"></i>
                             Aucun rendez-vous annulé pour le moment
+                        </div>):(
+                             <div className="row g-4">
+                            {concelledAppointments.map((appointment)=>(
+
+                            <div className="col-md-6" key={appointment._id}>
+                                <div className="card appointment-card shadow-sm">
+                                    <div className="card-body">
+                                        <div className="d-flex gap-3">
+                                            <div className="bg-primary text-white rounded p-3 text-center" style={{ minWidth: '80px' }}>
+                                                <div className="fw-bold" style={{ fontSize: '28px' }}>{getDayNumber(appointment.date)}</div>
+                                                <small>{getMonthName(appointment.date)}</small>
+                                                <div className="mt-2"><small>{getYear(appointment.date)}</small></div>
+                                            </div>
+                                            <div className="flex-grow-1">
+                                                <div className="d-flex justify-content-between align-items-start mb-2">
+                                                    <h5 className="mb-0">{appointment.doctorId?.name}</h5>
+                                                    <span className="badge bg-info">{appointment.status}</span>
+                                                </div>
+                                                <p className="text-muted mb-1">
+                                                    {/* <i className="fas fa-eye me-2"></i>{appointment.date} */}
+                                                </p>
+                                                <p className="text-muted mb-1">
+                                                    {/* <i className="far fa-clock me-2"></i>{appointment.creneau} */}
+                                                </p>
+                                                <p className="text-muted mb-3">
+                                                    <i className="fas fa-map-marker-alt me-2"></i>{appointment.doctorId?.address}
+                                                </p>
+                                                {/* <div className="d-flex gap-2">
+                                                    <button className="btn btn-sm btn-outline-primary">
+                                                        <i className="fas fa-edit me-1"></i>Modifier
+                                                    </button>
+                                                    <button className="btn btn-sm btn-outline-danger">
+                                                        <i className="fas fa-times me-1"></i>Annuler
+                                                    </button>
+                                                    <button className="btn btn-sm btn-outline-success">
+                                                        <i className="fas fa-directions me-1"></i>Itinéraire
+                                                    </button>
+                                                </div> */}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                              ))} 
                         </div>
+                        )
+                        }
                     </div>
                 </div>
             </div>
