@@ -208,7 +208,7 @@ const PatientDashboard = () => {
             </div>
           </div>
 
-          {/* Active Prescriptions */}
+          {/* signed Prescriptions */}
           <div className="col-md-6">
             <div className="card shadow-sm">
               <div className="card-header bg-warning text-white d-flex justify-content-between align-items-center">
@@ -216,35 +216,40 @@ const PatientDashboard = () => {
                 <a href="#" className="btn btn-sm btn-light">Voir tout</a>
               </div>
               <div className="card-body">
-                <div className="mb-3 p-3 bg-light rounded">
-                  <div className="d-flex justify-content-between mb-2">
-                    <h6>Dr. Khalid Youssef</h6>
-                    <small className="text-muted">15 Déc 2023</small>
-                  </div>
-                  <div className="d-flex justify-content-between align-items-center bg-white p-2 rounded mb-2">
-                    <div>
-                      <strong>Metformine 500mg</strong>
-                      <small className="text-muted d-block">2 fois/jour après repas</small>
+                {signedPrescriptions.length !== 0 ? (
+                  signedPrescriptions.map((prescription) => (
+                    <div className="mb-3 p-3 bg-light rounded" key={prescription._id}>
+                      <div className="d-flex justify-content-between mb-2">
+                        <h6>{prescription.doctorId?.name}</h6>
+                        <small className="text-muted">{new Date(prescription.createdAt).toLocaleDateString('fr-FR')}</small>
+                      </div>
+                      {prescription.medications?.map((medication, index) => (
+                        <div className="d-flex justify-content-between align-items-center bg-white p-2 rounded mb-2" key={index}>
+                          <div>
+                            <strong>{medication.name} {medication.dosage}</strong>
+                            <small className="text-muted d-block">{medication.instructions}</small>
+                          </div>
+                          <span className="badge bg-success">{medication.duration} jours</span>
+                        </div>
+                      ))}
                     </div>
-                    <span className="badge bg-success">30 jours</span>
+                  ))
+                ) : (
+                  <div className="text-center text-muted">
+                    <p>Aucune ordonnance active.</p>
                   </div>
-                  <div className="d-flex justify-content-between align-items-center bg-white p-2 rounded">
-                    <div>
-                      <strong>Vitamine D3 1000 UI</strong>
-                      <small className="text-muted d-block">1 fois/jour</small>
-                    </div>
-                    <span className="badge bg-success">90 jours</span>
-                  </div>
-                </div>
+                )}
               </div>
             </div>
           </div>
 
           {/* Health Tips */}
+          {/* mn b3d ghadi nkhli had lparty ikono fiha des conseils aleatoire */}
+          
           <div className="col-md-6">
             <div className="card shadow-sm">
               <div className="card-header bg-info text-white">
-                <h5 className="mb-0"><i className="fas fa-lightbulb me-2"></i>Conseils Santé</h5>
+                <h5 className="mb-0"><i className="fas fa-lightbulb me-2"></i>Conseils Santé</h5> 
               </div>
               <div className="card-body">
                 <div className="mb-3">
