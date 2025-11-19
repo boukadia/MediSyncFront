@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import SideBare from '../../../components/dashboard/Patient/SideBare';
 import '../../../styles/pages/prescription.css';
-import { jwtDecode } from 'jwt-decode';
+// import { jwtDecode } from 'jwt-decode';
 import { getPrescriptionsApi, type Prescription } from '../../../api/prescription.api';
 
 function Prescriptions() {
@@ -9,14 +9,14 @@ function Prescriptions() {
     const [loading, setLoading] = useState(true);
     const [myPrescriptions, setMyPrescriptions] = useState<Prescription[]>([]);
 
-    const getPatientId = () => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            const decoded: any = jwtDecode(token);
-            return decoded.userId || decoded.id;
-        }
-        return null;
-    };
+    // const getPatientId = () => {
+    //     const token = localStorage.getItem('token');
+    //     if (token) {
+    //         const decoded: any = jwtDecode(token);
+    //         return decoded.userId || decoded.id;
+    //     }
+    //     return null;
+    // };
 
     // Function to format date
     const formatDate = (dateString: string) => {
@@ -74,14 +74,7 @@ console.log(myPrescriptions);
     signedPrescriptions.forEach(function (prescription) {
         totalMedications = totalMedications + (prescription.medications?.length || 0);
     });
-    console.log(totalMedications);
-    
-
-   
-    
-
-   
-
+    // console.log(totalMedications);
     return (
         <div>
             {/* Sidebar */}

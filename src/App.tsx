@@ -20,8 +20,8 @@ function App() {
       <Route path='/login' element={<Login />}/>
       <Route path='/register' element={<Register />}/>
       <Route path="/unothorized" element={<Unothorized />} />
-      <Route path="/dashboard/patient/appointments" element={<Appointment />} />  
-      <Route path='/dashboard/patient/prescriptions' element={<Prescriptions />}/>
+      <Route path="/dashboard/patient/appointments" element={<ProtectedRoute allowedRole='patient'><Appointment /></ProtectedRoute>} />  
+      <Route path='/dashboard/patient/prescriptions' element={ <ProtectedRoute allowedRole={'patient'}><Prescriptions /></ProtectedRoute>}/>
       <Route path='/dashboard/patient' element={
         <ProtectedRoute allowedRole={'patient'}>
             <PatientDashboard />
