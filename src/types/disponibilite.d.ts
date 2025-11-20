@@ -1,6 +1,6 @@
 export interface Disponibilite {
     _id: string;
-jour: string;
+
 dateHeureDebut: string;
 dateHeureFin: string;
 doctorId: {

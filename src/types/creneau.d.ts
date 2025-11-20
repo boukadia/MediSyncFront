@@ -12,9 +12,9 @@ export interface Creneau {
         dateHeureFin: string;
         
     };
-    status:string;
-    dateHeureDebut: string;
-    dateHeureFin: string;
+    statut:string;
+    heure_debut: string;
+    heure_fin: string;
     isAvailable: boolean;
     createdAt: string;
     updatedAt: string;

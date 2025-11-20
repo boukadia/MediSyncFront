@@ -3,7 +3,7 @@ import SideBare from '../../../components/dashboard/Patient/SideBare';
 import '../../../styles/pages/appointment.css';
 import { jwtDecode } from 'jwt-decode';
 // import type { Appointment } from '../../../api/appointment.api';
-import { getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
+import { createAppointmentApi, getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
 import { getSpecialiteApi, type Specialite } from '../../../api/specialite.api';
 import { getDoctorsApi, type User } from '../../../api/user.api';
 import { getDisponibilitesApi, type Disponibilite } from '../../../api/disponibilite.api';
@@ -20,6 +20,15 @@ function Appointment() {
     const [disponibilites,setDisponibilites]=useState<Disponibilite[]>([])
     const [creneaux,setCreneaux]=useState<Creneau[]>([])
     const [doctors,setDoctors]=useState<User[]>([]);
+    
+    // Form state variables
+    const [selectedSpecialite, setSelectedSpecialite] = useState('');
+    const [selectedDoctor, setSelectedDoctor] = useState('');
+    const [selectedDisponibilite, setSelectedDisponibilite] = useState('');
+    const [selectedCreneau, setSelectedCreneau] = useState('');
+    const [consultationType, setConsultationType] = useState('');
+    const [consultationReason, setConsultationReason] = useState('');
+    
     const getPatientId = () => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -73,14 +82,21 @@ function Appointment() {
   
   function handleSpecialiteChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const selectedSpecialiteId = event.target.value;
+    setSelectedSpecialite(selectedSpecialiteId);
     const filteredDoctors = doctors.filter((doctor) =>  doctor.specialite=== selectedSpecialiteId);
     setFilterDoctors(filteredDoctors);
-
     
+    // Reset dependent fields
+    setSelectedDoctor('');
+    setSelectedDisponibilite('');
+    setSelectedCreneau('');
+    setDisponibilites([]);
+    setCreneaux([]);
 }
 function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
       const selectedDoctorId = event.target.value;
-    //   console.log('docId',selectedDoctorId);
+      setSelectedDoctor(selectedDoctorId);
+      console.log('docId',selectedDoctorId);
       
       // You can use the selectedDoctorId as needed
      const fetchDisponibilites=async()=>{
@@ -90,6 +106,11 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
         
   }
         fetchDisponibilites();
+        
+        // Reset dependent fields
+        setSelectedDisponibilite('');
+        setSelectedCreneau('');
+        setCreneaux([]);
 
     }
 //  console.log('dispo',disponibilites);
@@ -103,6 +124,7 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
     console.log("eventtarget",event.target.value);
     
     const disponibiliteId=event.target.value;
+    setSelectedDisponibilite(disponibiliteId);
     const fetchCreneaux=async()=>{
         const creneaux =await getCreneauxByIdApi(disponibiliteId,setErrorMessage);
         // ensure we always set an array of Creneau
@@ -110,10 +132,61 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
 
     }
     fetchCreneaux();
+    
+    // Reset dependent field
+    setSelectedCreneau('');
  }
- console.log("creneaux",creneaux);
- 
+        const freeCreneaux=creneaux.filter(function (creneau){return creneau.statut==='libre'});
 
+ // Create appointment function
+  const patientId = getPatientId();
+  const   createAppointment=async (e:React.MouseEvent<HTMLButtonElement>)=> {
+    e.preventDefault();
+    
+    // Validation
+    if (!selectedSpecialite || !selectedDoctor || !selectedDisponibilite || !selectedCreneau || !consultationType || !consultationReason) {
+        setErrorMessage('Veuillez remplir tous les champs requis');
+        return;
+    }
+    
+    try {
+      setLoading(true);
+      await createAppointmentApi(
+        selectedDoctor,          // doctorId
+        patientId,              // patientId  
+        selectedDisponibilite,   // disponibiliteId (to get date)
+        selectedCreneau,        // creneau
+        consultationReason,     // consultationReason
+        consultationType,       // typeConsultation
+        setErrorMessage
+      );
+      
+      // Reset form on success
+      setSelectedSpecialite('');
+      setSelectedDoctor('');
+      setSelectedDisponibilite('');
+      setSelectedCreneau('');
+      setConsultationType('');
+      setConsultationReason('');
+      setFilterDoctors([]);
+      setDisponibilites([]);
+      setCreneaux([]);
+      
+      // Close modal and refresh appointments
+      setShowModal(false);
+      const appointments = await getAppointmentsApi(setErrorMessage);
+      setMyAppointments(appointments);
+      
+      alert('Rendez-vous créé avec succès!');
+      
+    } catch (error) {
+      console.error('Error creating appointment:', error);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+ console.log(myAppointments);
  
     useEffect(()=>{
     const patientId = getPatientId();
@@ -176,7 +249,10 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                     </div>
                     <button 
                         className="btn btn-primary" 
-                        onClick={() => setShowModal(true)}
+                        onClick={() => {
+                            setShowModal(true);
+                            setErrorMessage('');
+                        }}
                         data-bs-toggle="modal" 
                         data-bs-target="#newAppointmentModal"
                     >
@@ -386,10 +462,15 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                             ></button>
                         </div>
                         <div className="modal-body">
+                            {errorMessage && (
+                                <div className="alert alert-danger" role="alert">
+                                    {errorMessage}
+                                </div>
+                            )}
                             <form>
                                 <div className="mb-3">
                                     <label className="form-label">Spécialité</label>
-                                    <select onChange={handleSpecialiteChange} className="form-select">
+                                    <select value={selectedSpecialite} onChange={handleSpecialiteChange} className="form-select">
                                         <option value="">choisir</option>
                                         { mySpecialites.map(element => (
                                             
@@ -401,8 +482,8 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                                 <div className="mb-3">
                                     <label className="form-label">Médecin</label>
                                     {filterDoctors.length===0 ?(<p className="text-muted">Aucun doctor disponible dans cette spécialité .</p>
-                                    ):(<select onChange={handlerDoctorChange} className="form-select">
-                                        <option>Select</option>
+                                    ):(<select value={selectedDoctor} onChange={handlerDoctorChange} className="form-select">
+                                        <option value="">Select</option>
                                         {filterDoctors.map((doctor)=>(
                                             <option key={doctor._id} value={doctor._id}>{doctor.name}</option>
                                         ))}
@@ -415,11 +496,11 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                                         {disponibilites.length === 0 ? (
                                             <p className="text-muted">Aucune disponibilité pour ce médecin.</p>
                                         ) : (
-                                            <select onChange={handleDisponibiliteChange} className="form-select">
+                                            <select value={selectedDisponibilite} onChange={handleDisponibiliteChange} className="form-select">
                                                 <option value="">Choisir une date</option>
                                                 {disponibilites.map((disponibilite) => (
                                                     <option key={disponibilite._id} value={disponibilite._id}>
-                                                        {disponibilite.jour} - {disponibilite.dateHeureDebut} à {disponibilite.dateHeureFin}
+                                                        {formatDate(disponibilite.dateHeureDebut)}
                                                     </option>
                                                 ))}
                                             </select>
@@ -427,14 +508,14 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                                     </div>
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Heure</label>
-                                        {creneaux.length === 0 ? (
+                                        {freeCreneaux.length === 0 ? (
                                             <p className="text-muted">Sélectionnez d'abord une date.</p>
                                         ) : (
-                                            <select className="form-select">
+                                            <select value={selectedCreneau} onChange={(e) => setSelectedCreneau(e.target.value)} className="form-select">
                                                 <option value="">Choisir un créneau</option>
-                                                {creneaux.map((creneau) => (
+                                                {freeCreneaux.map((creneau) => (
                                                     <option key={creneau._id} value={creneau._id}>
-                                                        {creneau.dateHeureDebut} - {creneau.dateHeureFin}
+                                                        {creneau.heure_debut} - {creneau.heure_fin}
                                                     </option>
                                                 ))}
                                             </select>
@@ -442,8 +523,18 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                                     </div>
                                 </div>
                                 <div className="mb-3">
+                                    <label className="form-label">Type de consultation</label>
+                                    <select value={consultationType} onChange={(e) => setConsultationType(e.target.value)} className="form-select">
+                                        <option value="">Choisir le type</option>
+                                        <option value="offline">Consultation en présentiel</option>
+                                        <option value="online">Consultation en ligne</option>
+                                    </select>
+                                </div>
+                                <div className="mb-3">
                                     <label className="form-label">Motif de consultation</label>
                                     <textarea 
+                                        value={consultationReason}
+                                        onChange={(e) => setConsultationReason(e.target.value)}
                                         className="form-control" 
                                         rows={3} 
                                         placeholder="Décrivez brièvement votre motif..."
@@ -459,8 +550,8 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                             >
                                 Annuler
                             </button>
-                            <button type="button" className="btn btn-primary">
-                                Confirmer le rendez-vous
+                            <button type="button" onClick={createAppointment} disabled={loading} className="btn btn-primary">
+                                {loading ? 'Création...' : 'Confirmer le rendez-vous'}
                             </button>
                         </div>
                     </div>
