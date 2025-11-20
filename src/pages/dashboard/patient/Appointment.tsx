@@ -4,12 +4,22 @@ import '../../../styles/pages/appointment.css';
 import { jwtDecode } from 'jwt-decode';
 // import type { Appointment } from '../../../api/appointment.api';
 import { getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
+import { getSpecialiteApi, type Specialite } from '../../../api/specialite.api';
+import { getDoctorsApi, type User } from '../../../api/user.api';
+import { getDisponibilitesApi, type Disponibilite } from '../../../api/disponibilite.api';
+import type { Creneau } from '../../../types/creneau';
+import { getCreneauxByIdApi } from '../../../api/creneau.api';
 
 function Appointment() {
     const [showModal, setShowModal] = useState(false);
     const [errorMessage,setErrorMessage]=useState('');
     const [loading, setLoading] = useState(false);
     const [myAppointments,setMyAppointments]=useState<Appointment[]>([])
+    const [mySpecialites,setMySpecialites]=useState<Specialite[]>([])
+    const [filterDoctors,setFilterDoctors]=useState<User[]>([])
+    const [disponibilites,setDisponibilites]=useState<Disponibilite[]>([])
+    const [creneaux,setCreneaux]=useState<Creneau[]>([])
+    const [doctors,setDoctors]=useState<User[]>([]);
     const getPatientId = () => {
         const token = localStorage.getItem('token');
         if (token) {
@@ -50,6 +60,61 @@ function Appointment() {
         const date = new Date(dateString);
         return date.getFullYear();
     };
+     useEffect(() => {
+     const  fetchDocteur=async()=>{
+        const doctors=await getDoctorsApi(setErrorMessage)
+        setDoctors(doctors)
+        setLoading(false);
+     }
+     fetchDocteur();
+  },[])
+
+//   console.log("spe",mySpecialites);
+  
+  function handleSpecialiteChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const selectedSpecialiteId = event.target.value;
+    const filteredDoctors = doctors.filter((doctor) =>  doctor.specialite=== selectedSpecialiteId);
+    setFilterDoctors(filteredDoctors);
+
+    
+}
+function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
+      const selectedDoctorId = event.target.value;
+    //   console.log('docId',selectedDoctorId);
+      
+      // You can use the selectedDoctorId as needed
+     const fetchDisponibilites=async()=>{
+        const disponibilites = await getDisponibilitesApi(selectedDoctorId,setErrorMessage);
+        // ensure we always set an array of Disponibilite
+        setDisponibilites(Array.isArray(disponibilites) ? disponibilites : [disponibilites]);
+        
+  }
+        fetchDisponibilites();
+
+    }
+//  console.log('dispo',disponibilites);
+//  disponibilites.forEach((disponibilite) => {
+//     console.log(`Disponibilité le ${disponibilite.jour} de ${disponibilite.dateHeureDebut} à ${disponibilite.dateHeureFin}`);
+//   }
+
+//  )
+
+ const handleDisponibiliteChange=(event:React.ChangeEvent<HTMLSelectElement>)=>{
+    console.log("eventtarget",event.target.value);
+    
+    const disponibiliteId=event.target.value;
+    const fetchCreneaux=async()=>{
+        const creneaux =await getCreneauxByIdApi(disponibiliteId,setErrorMessage);
+        // ensure we always set an array of Creneau
+        setCreneaux(Array.isArray(creneaux) ? creneaux : [creneaux]);
+
+    }
+    fetchCreneaux();
+ }
+ console.log("creneaux",creneaux);
+ 
+
+ 
     useEffect(()=>{
     const patientId = getPatientId();
     const  fetchAppointments=async()=>{
@@ -63,6 +128,23 @@ function Appointment() {
 
 
     },[])
+
+ 
+  console.log("doctors",doctors);
+  
+
+
+    useEffect(() =>{
+       const fetchSpecialites=async()=>{
+         const specialites=await getSpecialiteApi(setErrorMessage)
+        setMySpecialites(specialites)
+        setLoading(false);
+       }
+       fetchSpecialites();
+
+    },[])
+    // console.log('specia',mySpecialites);
+    
 //       useEffect(() => {
 //     console.log('myAppointments state updated:', myAppointments);
 // }, [myAppointments]);
@@ -72,8 +154,8 @@ function Appointment() {
      const upComingAppointments=myAppointments.filter(function(appointment){return appointment.status==="confirmed"})
      const concelledAppointments=myAppointments.filter(function(appointment){return appointment.status==='cancelled'})
      const pastAppointments=myAppointments.filter((appointment)=>appointment.status==="completed")
-console.log()
-console.log(concelledAppointments);
+// console.log()
+// console.log(concelledAppointments);
 
 
     return (
@@ -307,36 +389,56 @@ console.log(concelledAppointments);
                             <form>
                                 <div className="mb-3">
                                     <label className="form-label">Spécialité</label>
-                                    <select className="form-select">
-                                        <option>Médecine Générale</option>
-                                        <option>Dentiste</option>
-                                        <option>Ophtalmologie</option>
-                                        <option>Cardiologie</option>
-                                        <option>Dermatologie</option>
+                                    <select onChange={handleSpecialiteChange} className="form-select">
+                                        <option value="">choisir</option>
+                                        { mySpecialites.map(element => (
+                                            
+                                       
+                                        <option key={element._id} value={element._id}>{element.name}</option>
+                                         ))}
                                     </select>
                                 </div>
                                 <div className="mb-3">
                                     <label className="form-label">Médecin</label>
-                                    <select className="form-select">
-                                        <option>Dr. Sarah Ahmed</option>
-                                        <option>Dr. Mohamed Ali</option>
-                                        <option>Dr. Khalid Youssef</option>
-                                    </select>
+                                    {filterDoctors.length===0 ?(<p className="text-muted">Aucun doctor disponible dans cette spécialité .</p>
+                                    ):(<select onChange={handlerDoctorChange} className="form-select">
+                                        <option>Select</option>
+                                        {filterDoctors.map((doctor)=>(
+                                            <option key={doctor._id} value={doctor._id}>{doctor.name}</option>
+                                        ))}
+                                    </select>)}
+                                    
                                 </div>
                                 <div className="row">
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Date</label>
-                                        <input type="date" className="form-control" />
+                                        {disponibilites.length === 0 ? (
+                                            <p className="text-muted">Aucune disponibilité pour ce médecin.</p>
+                                        ) : (
+                                            <select onChange={handleDisponibiliteChange} className="form-select">
+                                                <option value="">Choisir une date</option>
+                                                {disponibilites.map((disponibilite) => (
+                                                    <option key={disponibilite._id} value={disponibilite._id}>
+                                                        {disponibilite.jour} - {disponibilite.dateHeureDebut} à {disponibilite.dateHeureFin}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
                                     </div>
                                     <div className="col-md-6 mb-3">
                                         <label className="form-label">Heure</label>
-                                        <select className="form-select">
-                                            <option>09:00</option>
-                                            <option>10:00</option>
-                                            <option>11:00</option>
-                                            <option>14:00</option>
-                                            <option>15:00</option>
-                                        </select>
+                                        {creneaux.length === 0 ? (
+                                            <p className="text-muted">Sélectionnez d'abord une date.</p>
+                                        ) : (
+                                            <select className="form-select">
+                                                <option value="">Choisir un créneau</option>
+                                                {creneaux.map((creneau) => (
+                                                    <option key={creneau._id} value={creneau._id}>
+                                                        {creneau.dateHeureDebut} - {creneau.dateHeureFin}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        )}
                                     </div>
                                 </div>
                                 <div className="mb-3">

@@ -9,6 +9,7 @@ import Unothorized from './pages/Unothorized'
 import PatientDashboard from './pages/dashboard/patient/PatientDashboard.tsx'
 import Appointment from './pages/dashboard/patient/Appointment.tsx'
 import Prescriptions from './pages/dashboard/patient/Prescription.tsx'
+import Test from './pages/dashboard/patient/Test.tsx'
 
 function App() {
 
@@ -21,6 +22,7 @@ function App() {
       <Route path='/register' element={<Register />}/>
       <Route path="/unothorized" element={<Unothorized />} />
       <Route path="/dashboard/patient/appointments" element={<ProtectedRoute allowedRole='patient'><Appointment /></ProtectedRoute>} />  
+      <Route path="/dashboard/patient/tests" element={<ProtectedRoute allowedRole='patient'><Test /></ProtectedRoute>} />  
       <Route path='/dashboard/patient/prescriptions' element={ <ProtectedRoute allowedRole={'patient'}><Prescriptions /></ProtectedRoute>}/>
       <Route path='/dashboard/patient' element={
         <ProtectedRoute allowedRole={'patient'}>

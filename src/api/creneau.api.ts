@@ -1,16 +1,15 @@
-// user.api
-//  import type User from "../pages/dashboard/patient/User";
-import type { User } from "../types/user";
- export type {User}
+import type { Creneau } from "../types/creneau";
+ export type {Creneau}
 const BASE = import.meta.env.VITE_API;
 
 
- export async function  getUsersApi(
+ export async function  getCreneauxApi(
+   
     setErrorMessage:(message:string)=>void
-): Promise<User> {
+): Promise<Creneau> {
     try {
         const token =localStorage.getItem('token');
-        const res=await fetch (`${BASE}/users/`,{
+        const res=await fetch (`${BASE}/Creneaux/`,{
             method:'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -19,7 +18,7 @@ const BASE = import.meta.env.VITE_API;
         });
         if(!res.ok){
             const data=await res.json();
-            throw new Error(data.message||'Erreur lors de la récupération des Users');
+            throw new Error(data.message||'Erreur lors de la récupération des Creneaus');
 
         }
         const data=await res.json();
@@ -37,32 +36,36 @@ const BASE = import.meta.env.VITE_API;
     }
     
 }
-//getDctors
-export async function  getDoctorsApi(
+ export async function  getCreneauxByIdApi(
+    disponibiliteId: string,
     setErrorMessage:(message:string)=>void
-): Promise<User[]> {
-    try {   
+): Promise<Creneau> {
+    try {
         const token =localStorage.getItem('token');
-        const res=await fetch (`${BASE}/users/doctors`,{
+        const res=await fetch (`${BASE}/Creneaux/${disponibiliteId}`,{
             method:'GET',
-             headers:{
+            headers:{
                 'Content-Type':'application/json',
                 'Authorization':`Bearer ${token}`
             },
         });
         if(!res.ok){
             const data=await res.json();
-            throw new Error(data.message||'Erreur lors de la récupération des Doctors');
+            throw new Error(data.message||'Erreur lors de la récupération des Creneaus');
+
         }
         const data=await res.json();
         return data;
+        
+        
     } catch (error: unknown) {
         console.error('Erreur:', error);
         if (error instanceof Error) {
             setErrorMessage(error.message);
         } else {
-            setErrorMessage('Erreur lors de la récupération des Doctors');
-        }   
+            setErrorMessage('Erreur lors de la récupération des ordonnances');
+        }
         return [];
     }
+    
 }

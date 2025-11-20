@@ -6,6 +6,7 @@ import PanelLeft from '../layout/PanelLeft';
 import { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { registerApi } from '../../api/auth.api';
+import { getSpecialiteApi, type Specialite } from '../../api/specialite.api';
 
 function RegisterForm() {
     const navigate=useNavigate();
@@ -103,6 +104,7 @@ function RegisterForm() {
     // const [passwordMatch, setPasswordMatch] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
      const [showModal, setShowModal] = useState(false);
+       const [mySpecialites,setMySpecialites]=useState<Specialite[]>([])
 
     const checkPasswordMatch = () => {
      {
@@ -131,6 +133,21 @@ useEffect(() => {
 }, [showModal]);
     
 console.log(role);
+
+
+
+ useEffect(() =>{
+       const fetchSpecialites=async()=>{
+         const specialites=await getSpecialiteApi(setErrorMessage)
+        setMySpecialites(specialites)
+        setLoading(false);
+       }
+       fetchSpecialites();
+
+    },[])
+    console.log('specia',mySpecialites);
+
+
 
     const sendUser =async (e: React.FormEvent)=>{
         e.preventDefault();
@@ -373,12 +390,9 @@ console.log(role);
                                             <div className="position-relative">
                                                 <select className="form-select" id="specialite" name="specialite" onChange={(e)=>{setSpecialite(e.target.value)}} required>
                                                     <option value="">Choisir une spécialité</option>
-                                                    <option value="general">Médecine générale</option>
-                                                    <option value="cardiology">Cardiologie</option>
-                                                    <option value="pediatrics">Pédiatrie</option>
-                                                    <option value="orthopedics">Orthopédie</option>
-                                                    <option value="dermatology">Dermatologie</option>
-                                                    <option value="neurology">Neurologie</option>
+                                                     { mySpecialites.map(element => (
+                                                        <option key={element._id} value={element._id}>{element.name}</option>
+                                         ))}
                                                 </select>
                                                 <i className="fas fa-stethoscope input-icon text-secondary small"></i>
                                             </div>

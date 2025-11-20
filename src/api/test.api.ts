@@ -1,16 +1,15 @@
-// user.api
-//  import type User from "../pages/dashboard/patient/User";
-import type { User } from "../types/user";
- export type {User}
+//  import type Test from "../pages/dashboard/patient/Test";
+import type { Test } from "../types/test";
+ export type {Test}
 const BASE = import.meta.env.VITE_API;
 
 
- export async function  getUsersApi(
+ export async function  getTestsApi(
     setErrorMessage:(message:string)=>void
-): Promise<User> {
+): Promise<Test> {
     try {
         const token =localStorage.getItem('token');
-        const res=await fetch (`${BASE}/users/`,{
+        const res=await fetch (`${BASE}/labResults/`,{
             method:'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -19,11 +18,11 @@ const BASE = import.meta.env.VITE_API;
         });
         if(!res.ok){
             const data=await res.json();
-            throw new Error(data.message||'Erreur lors de la récupération des Users');
+            throw new Error(data.message||'Erreur lors de la récupération des tests');
 
         }
         const data=await res.json();
-        return data;
+        return data.data;
         
         
     } catch (error: unknown) {
@@ -37,32 +36,39 @@ const BASE = import.meta.env.VITE_API;
     }
     
 }
-//getDctors
-export async function  getDoctorsApi(
-    setErrorMessage:(message:string)=>void
-): Promise<User[]> {
-    try {   
-        const token =localStorage.getItem('token');
-        const res=await fetch (`${BASE}/users/doctors`,{
-            method:'GET',
-             headers:{
+export async function createTest(
+    setErrorMessage:(message:string)=>void,
+    testData:Partial<Test>
+    ):Promise<Test>
+    {
+    try {
+        const token=localStorage.getItem('token');
+        const res=await fetch(`${BASE}/tests/`,{
+            method:"POST",
+            headers:{
                 'Content-Type':'application/json',
                 'Authorization':`Bearer ${token}`
             },
-        });
+            body:JSON.stringify(testData)
+        })
         if(!res.ok){
             const data=await res.json();
-            throw new Error(data.message||'Erreur lors de la récupération des Doctors');
+            throw new  Error(data.message||'Erreur lors de la récupération des tests');
+            
         }
         const data=await res.json();
-        return data;
-    } catch (error: unknown) {
-        console.error('Erreur:', error);
+        return data.data;
+       
+        
+    } catch (error) {
+         console.error('Erreur:', error);
         if (error instanceof Error) {
             setErrorMessage(error.message);
         } else {
-            setErrorMessage('Erreur lors de la récupération des Doctors');
-        }   
+            setErrorMessage('Erreur lors de la récupération des ordonnances');
+        }
         return [];
+    
     }
-}
+
+} 

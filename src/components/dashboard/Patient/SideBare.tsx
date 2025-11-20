@@ -22,7 +22,7 @@ function SideBare() {
            <i className="fas fa-calendar-check me-2"></i> Mes Rendez-vous
             </Link>
 
-            <Link className={isActive('/dashboard/patient/test')} to="/dashboard/patient/test" >
+            <Link className={isActive('/dashboard/patient/tests')} to="/dashboard/patient/tests" >
                 <i className="fas fa-flask me-2"></i> Mes Analyses
             </Link>
             <Link className={isActive('/dashboard/patient/prescriptions')} to="/dashboard/patient/prescriptions" >

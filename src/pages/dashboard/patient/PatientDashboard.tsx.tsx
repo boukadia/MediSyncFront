@@ -3,7 +3,7 @@ import '../../../styles/pages/dashboardPatient.css';
 import SideBare from '../../../components/dashboard/Patient/SideBare';
 import Header from '../../../components/dashboard/Patient/Header';
 // import Statistique from '../../../components/dashboard/Patient/Statistique';
-import MainContent from '../../../components/dashboard/Patient/MainContent';
+// import MainContent from '../../../components/dashboard/Patient/MainContent';
 import { useEffect, useState } from 'react';
 import type { Prescription } from '../../../types/prescription';
 import { getPrescriptionsApi } from '../../../api/prescription.api';
@@ -78,6 +78,10 @@ const PatientDashboard = () => {
                                     <>
                                         <h4>{formatDate(upComingAppointments.date)}</h4>
                                         <small className="text-success">{upComingAppointments.doctorId?.name}</small>
+                                        <div className="d-flex align-items-center mt-1">
+                                            <i className="fas fa-clock text-primary me-1"></i>
+                                            <small className="text-primary fw-bold">{upComingAppointments.creneau?.heure_debut}</small>
+                                        </div>
                                     </>
                                 ) : (
                                     <>
