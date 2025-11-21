@@ -39,6 +39,7 @@ export async function getAppointmentsApi(
 export async function createAppointmentApi(
   doctorId: string,
   patientId: string,
+  appointmentDate: string,
   disponibiliteId: string,
   creneau: string,
   consultationReason: string,
@@ -62,8 +63,8 @@ export async function createAppointmentApi(
       throw new Error('Erreur lors de la récupération de la disponibilité');
     }
     
-    const disponibiliteData = await disponibiliteRes.json();
-    const date = disponibiliteData.dateHeureDebut || disponibiliteData.date;
+    console.log("date",appointmentDate);
+    
     
     const res = await fetch(`${BASE}/appointments/`, {
       method: 'POST',
@@ -74,7 +75,7 @@ export async function createAppointmentApi(
       body: JSON.stringify({
         patientId,
         doctorId,
-        date: date, // Required by backend
+        date: appointmentDate, // Required by backend
         creneau, // Backend expects 'creneau' not 'creneauId'
         consultationReason, // Backend expects 'consultationReason' not 'motif'
         typeConsultation // Backend expects 'typeConsultation' not 'type'

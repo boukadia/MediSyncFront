@@ -36,3 +36,32 @@ const BASE = import.meta.env.VITE_API;
     }
     
 }
+export async function getDisponibiliteByIdApi(
+    id: string,
+    setErrorMessage: (message: string) => void
+): Promise<Disponibilite | null> {
+    try {
+        const token = localStorage.getItem('token');
+        const res = await fetch(`${BASE}/disponibilites/detail/${id}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.message || 'Erreur lors de la récupération de la disponibilite');
+        }
+        const data = await res.json();
+        return data || null;
+    } catch (error: unknown) {
+        console.error('Erreur:', error);
+        if (error instanceof Error) {
+            setErrorMessage(error.message);
+        } else {
+            setErrorMessage('Erreur lors de la récupération de la disponibilite');
+        }
+        return null;
+    }
+}

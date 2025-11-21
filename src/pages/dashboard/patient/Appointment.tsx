@@ -3,7 +3,7 @@ import SideBare from '../../../components/dashboard/Patient/SideBare';
 import '../../../styles/pages/appointment.css';
 import { jwtDecode } from 'jwt-decode';
 // import type { Appointment } from '../../../api/appointment.api';
-import { createAppointmentApi, getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
+import { cancelAppointmentApi, createAppointmentApi, getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
 import { getSpecialiteApi, type Specialite } from '../../../api/specialite.api';
 import { getDoctorsApi, type User } from '../../../api/user.api';
 import { getDisponibilitesApi, type Disponibilite } from '../../../api/disponibilite.api';
@@ -17,6 +17,7 @@ function Appointment() {
     const [myAppointments,setMyAppointments]=useState<Appointment[]>([])
     const [mySpecialites,setMySpecialites]=useState<Specialite[]>([])
     const [filterDoctors,setFilterDoctors]=useState<User[]>([])
+    const [appointmentDate,setAppointmentDate]=useState('');
     const [disponibilites,setDisponibilites]=useState<Disponibilite[]>([])
     const [creneaux,setCreneaux]=useState<Creneau[]>([])
     const [doctors,setDoctors]=useState<User[]>([]);
@@ -24,7 +25,7 @@ function Appointment() {
     // Form state variables
     const [selectedSpecialite, setSelectedSpecialite] = useState('');
     const [selectedDoctor, setSelectedDoctor] = useState('');
-    const [selectedDisponibilite, setSelectedDisponibilite] = useState('');
+    const [selectedDisponibiliteId, setSelectedDisponibiliteId] = useState('');
     const [selectedCreneau, setSelectedCreneau] = useState('');
     const [consultationType, setConsultationType] = useState('');
     const [consultationReason, setConsultationReason] = useState('');
@@ -32,7 +33,7 @@ function Appointment() {
     const getPatientId = () => {
         const token = localStorage.getItem('token');
         if (token) {
-            const decoded: any = jwtDecode(token);
+            const decoded: { userId?: string; id?: string } = jwtDecode(token);
             return decoded.userId || decoded.id;
         }
         return null;
@@ -88,7 +89,7 @@ function Appointment() {
     
     // Reset dependent fields
     setSelectedDoctor('');
-    setSelectedDisponibilite('');
+    setSelectedDisponibiliteId('');
     setSelectedCreneau('');
     setDisponibilites([]);
     setCreneaux([]);
@@ -108,7 +109,7 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
         fetchDisponibilites();
         
         // Reset dependent fields
-        setSelectedDisponibilite('');
+        setSelectedDisponibiliteId('');
         setSelectedCreneau('');
         setCreneaux([]);
 
@@ -124,7 +125,7 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
     console.log("eventtarget",event.target.value);
     
     const disponibiliteId=event.target.value;
-    setSelectedDisponibilite(disponibiliteId);
+    setSelectedDisponibiliteId(disponibiliteId);
     const fetchCreneaux=async()=>{
         const creneaux =await getCreneauxByIdApi(disponibiliteId,setErrorMessage);
         // ensure we always set an array of Creneau
@@ -132,6 +133,10 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
 
     }
     fetchCreneaux();
+    const selectedDisponibilite=disponibilites.find((disponibilite)=>disponibilite._id===disponibiliteId);
+    const dateAppointment=selectedDisponibilite ? selectedDisponibilite.dateHeureDebut : '';
+    setAppointmentDate(dateAppointment)
+    // console.log("jdid",selectedDisponibilite);
     
     // Reset dependent field
     setSelectedCreneau('');
@@ -139,22 +144,24 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
         const freeCreneaux=creneaux.filter(function (creneau){return creneau.statut==='libre'});
 
  // Create appointment function
-  const patientId = getPatientId();
   const   createAppointment=async (e:React.MouseEvent<HTMLButtonElement>)=> {
     e.preventDefault();
     
     // Validation
-    if (!selectedSpecialite || !selectedDoctor || !selectedDisponibilite || !selectedCreneau || !consultationType || !consultationReason) {
+    if (!selectedSpecialite || !selectedDoctor || !selectedDisponibiliteId || !selectedCreneau || !consultationType || !consultationReason) {
         setErrorMessage('Veuillez remplir tous les champs requis');
         return;
     }
+    
+    const patientId = getPatientId();
     
     try {
       setLoading(true);
       await createAppointmentApi(
         selectedDoctor,          // doctorId
-        patientId,              // patientId  
-        selectedDisponibilite,   // disponibiliteId (to get date)
+        patientId,  
+        appointmentDate,            // patientId  
+        selectedDisponibiliteId,   // disponibiliteId (to get date)
         selectedCreneau,        // creneau
         consultationReason,     // consultationReason
         consultationType,       // typeConsultation
@@ -164,7 +171,7 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
       // Reset form on success
       setSelectedSpecialite('');
       setSelectedDoctor('');
-      setSelectedDisponibilite('');
+      setSelectedDisponibiliteId('');
       setSelectedCreneau('');
       setConsultationType('');
       setConsultationReason('');
@@ -186,10 +193,53 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
     }
   }
 
+  // Cancel appointment function
+  const cancelAppointment = async (appointmentId: string) => {
+    // Find the appointment to check its status
+    const appointment = myAppointments.find(apt => apt._id === appointmentId);
+    
+    if (!appointment) {
+      alert('Rendez-vous non trouvé');
+      return;
+    }
+    
+    // Check if appointment can be cancelled
+    if (appointment.status !== 'confirmed') {
+      if (appointment.status === 'pending') {
+        alert('Ce rendez-vous est en attente de confirmation. Vous ne pouvez pas le modifier pour le moment.');
+      } else {
+        alert('Ce rendez-vous ne peut pas être annulé.');
+      }
+      return;
+    }
+    
+    if (window.confirm('Êtes-vous sûr de vouloir annuler ce rendez-vous ?')) {
+      try {
+        setLoading(true);
+        await cancelAppointmentApi(
+          appointmentId,
+          setErrorMessage,
+          async () => {
+            const appointments = await getAppointmentsApi(setErrorMessage);
+            setMyAppointments(appointments);
+            alert('Rendez-vous annulé avec succès!');
+          }
+        );
+      } catch (error) {
+        console.error('Error cancelling appointment:', error);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+
+
+
+
  console.log(myAppointments);
  
     useEffect(()=>{
-    const patientId = getPatientId();
     const  fetchAppointments=async()=>{
         const appointments= await getAppointmentsApi(setErrorMessage)
         setMyAppointments(appointments);
@@ -325,10 +375,12 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                                                     <i className="fas fa-map-marker-alt me-2"></i>{appointment.doctorId?.address}
                                                 </p>
                                                 <div className="d-flex gap-2">
-                                                    <button className="btn btn-sm btn-outline-primary">
-                                                        <i className="fas fa-edit me-1"></i>Modifier
-                                                    </button>
-                                                    <button className="btn btn-sm btn-outline-danger">
+                                                    <button 
+                                                        className="btn btn-sm btn-outline-danger"
+                                                        onClick={() => appointment._id && cancelAppointment(appointment._id)}
+                                                        disabled={loading || appointment.status !== 'confirmed'}
+                                                        title={appointment.status === 'pending' ? 'En attente de confirmation' : appointment.status !== 'confirmed' ? 'Ne peut pas être annulé' : ''}
+                                                    >
                                                         <i className="fas fa-times me-1"></i>Annuler
                                                     </button>
                                                     <button className="btn btn-sm btn-outline-success">
@@ -373,10 +425,12 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                                                     <i className="fas fa-map-marker-alt me-2"></i>{appointment.doctorId?.address}
                                                 </p>
                                                 <div className="d-flex gap-2">
-                                                    <button className="btn btn-sm btn-outline-primary">
-                                                        <i className="fas fa-edit me-1"></i>Modifier
-                                                    </button>
-                                                    <button className="btn btn-sm btn-outline-danger">
+                                                    <button 
+                                                        className="btn btn-sm btn-outline-danger"
+                                                        onClick={() => appointment._id && cancelAppointment(appointment._id)}
+                                                        disabled={loading || appointment.status !== 'confirmed'}
+                                                        title={appointment.status === 'pending' ? 'En attente de confirmation' : appointment.status !== 'confirmed' ? 'Ne peut pas être annulé' : ''}
+                                                    >
                                                         <i className="fas fa-times me-1"></i>Annuler
                                                     </button>
                                                     <button className="btn btn-sm btn-outline-success">
@@ -449,6 +503,8 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                 </div>
             </div>
 
+
+
             {/* New Appointment Modal */}
             <div className="modal fade" id="newAppointmentModal" tabIndex={-1}>
                 <div className="modal-dialog modal-lg">
@@ -496,7 +552,7 @@ function handlerDoctorChange(event: React.ChangeEvent<HTMLSelectElement>) {
                                         {disponibilites.length === 0 ? (
                                             <p className="text-muted">Aucune disponibilité pour ce médecin.</p>
                                         ) : (
-                                            <select value={selectedDisponibilite} onChange={handleDisponibiliteChange} className="form-select">
+                                            <select value={selectedDisponibiliteId} onChange={handleDisponibiliteChange} className="form-select">
                                                 <option value="">Choisir une date</option>
                                                 {disponibilites.map((disponibilite) => (
                                                     <option key={disponibilite._id} value={disponibilite._id}>

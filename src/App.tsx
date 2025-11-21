@@ -10,6 +10,7 @@ import PatientDashboard from './pages/dashboard/patient/PatientDashboard.tsx'
 import Appointment from './pages/dashboard/patient/Appointment.tsx'
 import Prescriptions from './pages/dashboard/patient/Prescription.tsx'
 import Test from './pages/dashboard/patient/Test.tsx'
+import DoctorDashboard from './pages/dashboard/doctor/DoctorDashboard.tsx'
 
 function App() {
 
@@ -21,6 +22,8 @@ function App() {
       <Route path='/login' element={<Login />}/>
       <Route path='/register' element={<Register />}/>
       <Route path="/unothorized" element={<Unothorized />} />
+      {/* <Route path="/logout" element={<Logout />} /> */}
+      <Route path='/dashboard/doctor' element={<ProtectedRoute allowedRole='doctor'><DoctorDashboard/></ProtectedRoute>}/>' 
       <Route path="/dashboard/patient/appointments" element={<ProtectedRoute allowedRole='patient'><Appointment /></ProtectedRoute>} />  
       <Route path="/dashboard/patient/tests" element={<ProtectedRoute allowedRole='patient'><Test /></ProtectedRoute>} />  
       <Route path='/dashboard/patient/prescriptions' element={ <ProtectedRoute allowedRole={'patient'}><Prescriptions /></ProtectedRoute>}/>
