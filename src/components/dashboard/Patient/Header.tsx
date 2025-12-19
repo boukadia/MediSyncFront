@@ -1,9 +1,17 @@
-function Header() {
+interface navbatProps{
+    user:{
+        name?:string;
+        role?:string;
+        email?:string
+    }
+
+}
+function Header({user}:navbatProps) {
     return (
         <>
         <div className="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h2>Bonjour, Ahmed Mohamed 👋</h2>
+                <h2>Bonjour, {user.name}</h2>
                 <p className="text-muted">Bienvenue dans votre espace santé</p>
             </div>
             <div className="d-flex gap-3 align-items-center">
@@ -19,8 +27,7 @@ function Header() {
                         alt="Avatar"
                     />
                     <div>
-                        <small className="d-block fw-bold">Ahmed Mohamed</small>
-                        <small className="text-muted">ID: 12345</small>
+                        <small className="d-block fw-bold">{user.name}</small>
                     </div>
                 </div>
             </div>

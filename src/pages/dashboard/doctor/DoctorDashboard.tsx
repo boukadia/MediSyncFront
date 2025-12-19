@@ -16,6 +16,7 @@ function DoctorDashboard() {
         const [prescriptions,setPrescriptions]=useState<Prescription[]>([])
         const [loading,setLoading]=useState<boolean>(true);
         const [errorMessage,setErrorMessage]=useState<string>('');
+        const [activePatients, setActivePatients] = useState<number>(0);
        
  // Function to format date
     const formatDate = (dateString: string) => {
@@ -32,6 +33,11 @@ function DoctorDashboard() {
         const  fetchAppointments=async()=>{
             const appointments= await getAppointmentsApi(setErrorMessage)
             setMyAppointments(appointments);
+            
+            // Calculate unique patients from appointments
+            const uniquePatients = new Set(appointments.map(apt => apt.patientId._id));
+            setActivePatients(uniquePatients.size);
+            
             setLoading(false);
         }
         fetchAppointments();
@@ -42,12 +48,16 @@ function DoctorDashboard() {
             setLoading(false);
         }
         fetchPrescription();
+
+        // const patientesIds=myAppointments.map(Appointment)
       
         
     
     
         },[])
         console.log("presscr",myAppointments);
+
+        // const patienteides=myAppointments.map((appointmet=>appointmet.stat))
         
  
   const getStatusBadge = (status: string) => {
@@ -112,7 +122,7 @@ function DoctorDashboard() {
                   <i className="fas fa-user-group"></i>
                 </div>
                 <div className="ms-3">
-                  <div className="stat-value">86</div>
+                  <div className="stat-value">{activePatients}</div>
                   <small className="text-muted">Patients actifs</small>
                 </div>
               </div>
@@ -149,7 +159,7 @@ function DoctorDashboard() {
         {/* Content Grid */}
         <div className="row g-3">
           {/* Left Column - Appointments Table */}
-          <div className="col-lg-8">
+          <div className="col-lg-10">
             <div className="card">
               <div className="card-header d-flex justify-content-between align-items-center">
                 <h5 className="card-title mb-0">Derniers rendez-vous</h5>
@@ -183,8 +193,8 @@ function DoctorDashboard() {
                           <td>{formatDate(appointment.date)}</td>
                           <td>{appointment.creneau.heure_debut}</td>
                           <td>{getTypeBadge(appointment.typeConsultation)}</td>
-                          <td>{getStatusBadge(appointment.status)}</td>
                           <td>{getStatusBadge(appointment.consultationReason)}</td>
+                          <td>{getStatusBadge(appointment.status)}</td>
                           <td>
                             <div className="d-flex gap-1">
                               <button 
@@ -237,71 +247,7 @@ function DoctorDashboard() {
           </div>
 
           {/* Right Column - Notifications and Calendar */}
-          <div className="col-lg-4">
-            <div className="d-flex flex-column gap-3">
-              {/* Notifications */}
-              {/* <div className="card">
-                <div className="card-header">
-                  <h6 className="card-title mb-0">Notifications récentes</h6>
-                </div>
-                <div className="card-body">
-                  <div className="d-flex flex-column gap-2">
-                    {notifications.map((notification) => (
-                      <div key={notification.id} className="notification-item">
-                        <i className={`${notification.icon} notification-icon`}></i>
-                        <div className="notification-content">
-                          <div>
-                            <strong>{notification.title}</strong> {notification.description}
-                            {notification.id === '1' && <span className="badge badge-success ms-1">Biochimie</span>}
-                          </div>
-                          <small className="text-muted" title={notification.datetime}>
-                            {notification.time}
-                          </small>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div> */}
-
-              {/* Calendar */}
-              {/* <div className="card">
-                <div className="card-header">
-                  <h6 className="card-title mb-0">Calendrier — Novembre 2025</h6>
-                </div>
-                <div className="card-body">
-                  <div className="calendar">
-                    <div className="calendar-header">
-                      <button className="btn btn-outline-secondary btn-sm">
-                        <i className="fas fa-chevron-left"></i>
-                      </button>
-                      <strong>Novembre 2025</strong>
-                      <button className="btn btn-outline-secondary btn-sm">
-                        <i className="fas fa-chevron-right"></i>
-                      </button>
-                    </div>
-                    <div className="calendar-grid">
-                      <div className="calendar-weekdays">
-                        {['L', 'M', 'M', 'J', 'V', 'S', 'D'].map((day, index) => (
-                          <div key={index} className="calendar-weekday">{day}</div>
-                        ))}
-                      </div>
-                      <div className="calendar-days">
-                        {calendarDays.map((day, index) => (
-                          <div 
-                            key={index} 
-                            className={`calendar-day ${day.isToday ? 'is-today' : ''} ${day.hasEvent ? 'has-event' : ''} ${!day.isCurrentMonth ? 'other-month' : ''}`}
-                          >
-                            {day.isCurrentMonth ? day.number : ''}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div> */}
-            </div>
-          </div>
+         
         </div>
 
         {/* Second Row */}

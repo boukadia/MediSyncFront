@@ -3,8 +3,13 @@ import SideBare from '../../../components/dashboard/Patient/SideBare';
 import '../../../styles/pages/prescription.css';
 // import { jwtDecode } from 'jwt-decode';
 import { getPrescriptionsApi, type Prescription } from '../../../api/prescription.api';
+import Header from '../../../components/dashboard/Patient/Header';
+import { jwtDecode } from 'jwt-decode';
 
 function Prescriptions() {
+     const token = localStorage.getItem("token");
+    const decodedToken = jwtDecode(token);
+    const user:{ role?:string; name?:string; email?:string} = decodedToken;
     const [errorMessage, setErrorMessage] = useState('');
     const [loading, setLoading] = useState(true);
     const [myPrescriptions, setMyPrescriptions] = useState<Prescription[]>([]);
@@ -83,6 +88,8 @@ console.log(myPrescriptions);
             {/* Main Content */}
             <div className="main-content">
                 {/* Header */}
+        <Header user={user} />
+
                 <div className="d-flex justify-content-between align-items-center mb-4">
                     <div>
                         <h2>

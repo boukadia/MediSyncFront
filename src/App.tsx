@@ -6,11 +6,11 @@ import Home from './pages/home'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import ProtectedRoute from './routes/ProtectedRoute'
 import Unothorized from './pages/Unothorized'
-import PatientDashboard from './pages/dashboard/patient/PatientDashboard.tsx'
 import Appointment from './pages/dashboard/patient/Appointment.tsx'
 import Prescriptions from './pages/dashboard/patient/Prescription.tsx'
 import Test from './pages/dashboard/patient/Test.tsx'
 import DoctorDashboard from './pages/dashboard/doctor/DoctorDashboard.tsx'
+import DashboardPrincipal from './pages/dashboard/patient/DashboardPrincipal.tsx'
 
 function App() {
 
@@ -29,7 +29,7 @@ function App() {
       <Route path='/dashboard/patient/prescriptions' element={ <ProtectedRoute allowedRole={'patient'}><Prescriptions /></ProtectedRoute>}/>
       <Route path='/dashboard/patient' element={
         <ProtectedRoute allowedRole={'patient'}>
-            <PatientDashboard />
+            <DashboardPrincipal />
         </ProtectedRoute>
         }
       />

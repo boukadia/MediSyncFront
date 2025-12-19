@@ -8,8 +8,12 @@ import { useEffect, useState } from 'react';
 import type { Prescription } from '../../../types/prescription';
 import { getPrescriptionsApi } from '../../../api/prescription.api';
 import { getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
+import { jwtDecode } from 'jwt-decode';
 
-const PatientDashboard = () => {
+const DashboardPrincipal = () => {
+   const token = localStorage.getItem("token");
+      const decodedToken = jwtDecode(token);
+      const user:{ role?:string; name?:string; email?:string} = decodedToken;
  const  [loading,setLoading] = useState(false)
  const [errorMessage,setErrorMessage]=useState('')
  const [myPrescriptions,setMyPrescriptions]=useState<Prescription[]>([])
@@ -66,7 +70,7 @@ const PatientDashboard = () => {
       
       <SideBare />
       <div className="main-content">
-        <Header />
+        <Header user={user} />
         <div className="row g-3 mb-4">
             <div className="col-md-3">
                 <div className="card stats-card shadow-sm">
@@ -292,4 +296,4 @@ const PatientDashboard = () => {
   );
 };
 
-export default PatientDashboard;
+export default DashboardPrincipal;
