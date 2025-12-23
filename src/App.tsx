@@ -9,8 +9,12 @@ import Unothorized from './pages/Unothorized'
 import Appointment from './pages/dashboard/patient/Appointment.tsx'
 import Prescriptions from './pages/dashboard/patient/Prescription.tsx'
 import Test from './pages/dashboard/patient/Test.tsx'
-import DoctorDashboard from './pages/dashboard/doctor/DoctorDashboard.tsx'
-import DashboardPrincipal from './pages/dashboard/patient/DashboardPrincipal.tsx'
+import DashboardPrincipalDoctor from './pages/dashboard/doctor/DashboardPrincipalDoctor.tsx'
+import DashboardPrincipalPatient from './pages/dashboard/patient/DashboardPrincipalPatient.tsx'
+import DoctorPrescriptions from './pages/dashboard/doctor/DoctorPrescriptions.tsx'
+import DoctorAppointments from './pages/dashboard/doctor/DoctorAppointments.tsx'
+import DoctorLaboOrderTests from './pages/dashboard/doctor/DoctorLaboOrderTests.tsx'
+import DoctorConsultations from './pages/dashboard/doctor/DoctorConsultations.tsx'
 
 function App() {
 
@@ -23,13 +27,17 @@ function App() {
       <Route path='/register' element={<Register />}/>
       <Route path="/unothorized" element={<Unothorized />} />
       {/* <Route path="/logout" element={<Logout />} /> */}
-      <Route path='/dashboard/doctor' element={<ProtectedRoute allowedRole='doctor'><DoctorDashboard/></ProtectedRoute>}/>' 
+      <Route path='/dashboard/doctor' element={<ProtectedRoute allowedRole='doctor'><DashboardPrincipalDoctor/></ProtectedRoute>}/>' 
+      <Route path='/dashboard/doctor/prescriptions' element={<ProtectedRoute allowedRole='doctor'><DoctorPrescriptions /></ProtectedRoute>} />
+      <Route path='/dashboard/doctor/appointments' element={<ProtectedRoute allowedRole='doctor'><DoctorAppointments /></ProtectedRoute>} />
+      <Route path='/dashboard/doctor/consultations' element={<ProtectedRoute allowedRole='doctor'><DoctorConsultations /></ProtectedRoute>} />
+      <Route path='/dashboard/doctor/labo-tests' element={<ProtectedRoute allowedRole='doctor'><DoctorLaboOrderTests /></ProtectedRoute>} />
       <Route path="/dashboard/patient/appointments" element={<ProtectedRoute allowedRole='patient'><Appointment /></ProtectedRoute>} />  
       <Route path="/dashboard/patient/tests" element={<ProtectedRoute allowedRole='patient'><Test /></ProtectedRoute>} />  
       <Route path='/dashboard/patient/prescriptions' element={ <ProtectedRoute allowedRole={'patient'}><Prescriptions /></ProtectedRoute>}/>
       <Route path='/dashboard/patient' element={
         <ProtectedRoute allowedRole={'patient'}>
-            <DashboardPrincipal />
+            <DashboardPrincipalPatient />
         </ProtectedRoute>
         }
       />

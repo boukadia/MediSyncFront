@@ -6,6 +6,7 @@ export interface Appointment {
     name:string
     _id:string
     address:string
+    phone:string
   };
   // doctorId: string;
   doctorId: {

@@ -10,7 +10,7 @@ import { getPrescriptionsApi } from '../../../api/prescription.api';
 import { getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
 import { jwtDecode } from 'jwt-decode';
 
-const DashboardPrincipal = () => {
+const DashboardPrincipalPatient = () => {
    const token = localStorage.getItem("token");
       const decodedToken = jwtDecode(token);
       const user:{ role?:string; name?:string; email?:string} = decodedToken;
@@ -296,4 +296,4 @@ const DashboardPrincipal = () => {
   );
 };
 
-export default DashboardPrincipal;
+export default DashboardPrincipalPatient;

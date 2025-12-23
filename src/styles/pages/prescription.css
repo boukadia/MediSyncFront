@@ -98,3 +98,51 @@ body {
 .alert-info {
     border-left-color: #17a2b8;
 }
+
+/* Doctor Sidebar Styles */
+.doctor-sidebar {
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    height: 100vh !important;
+    background: white;
+    color: #334155;
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    width: 268px;
+    border-right: 1px solid #e5e7eb;
+    z-index: 100 !important;
+    overflow-y: auto;
+}
+
+/* Force sidebar to be visible on desktop */
+@media (min-width: 992px) {
+    .doctor-sidebar {
+        transform: translateX(0) !important;
+        display: flex !important;
+    }
+}
+
+
+
+/* Adjust main-content for doctor sidebar (left side) */
+body:has(.doctor-sidebar) .main-content {
+    margin-left: 268px;
+    margin-right: 0;
+    padding: 20px;
+    min-height: 100vh;
+    position: relative;
+    z-index: 1;
+}
+
+/* Ensure proper page layout */
+html,
+body {
+    height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}

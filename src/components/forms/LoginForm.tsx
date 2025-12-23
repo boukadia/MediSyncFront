@@ -1,25 +1,25 @@
 import { jwtDecode } from "jwt-decode";
 import "../../styles/pages/login.css";
 import PanelLeft from "../layout/PanelLeft";
-import {   useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { loginApi } from "../../api/auth.api";
 function LoginForm() {
   const [email, setEmail] = useState("");
-const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
   const [password, setPassword] = useState("");
-  const navigate=useNavigate();
-  
-console.log(errorMessage);
+  const navigate = useNavigate();
 
-  const   handleLogin=async (e:React.MouseEvent<HTMLButtonElement>)=> {
+  console.log(errorMessage);
+
+  const handleLogin = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
- await loginApi(email,password,navigate,setErrorMessage);
+    await loginApi(email, password, navigate, setErrorMessage);
 
 
- 
-}
-    
+
+  }
+
 
   // const backgroundButton = (e) => {
   //   const btn = document.querySelectorAll(".user-type-btn");
@@ -46,8 +46,8 @@ console.log(errorMessage);
 
             <form>
               {errorMessage && (
-  <div className="alert alert-danger text-center">{errorMessage}</div>
-)}
+                <div className="alert alert-danger text-center">{errorMessage}</div>
+              )}
               <div className="mb-4">
                 <label
                   htmlFor="email"
@@ -60,7 +60,7 @@ console.log(errorMessage);
                     <i className="fas fa-envelope text-primary"></i>
                   </span>
                   <input
-                    onChange={(e) => {setEmail(e.target.value);setErrorMessage("")}}
+                    onChange={(e) => { setEmail(e.target.value); setErrorMessage("") }}
                     type="email"
                     className="form-control border-start-0"
                     id="email"
@@ -82,7 +82,7 @@ console.log(errorMessage);
                     <i className="fas fa-lock text-primary"></i>
                   </span>
                   <input
-                    onChange={(e) => {setPassword(e.target.value);setErrorMessage("")}}
+                    onChange={(e) => { setPassword(e.target.value); setErrorMessage("") }}
                     type="password"
                     className="form-control border-start-0"
                     id="password"
@@ -130,12 +130,12 @@ console.log(errorMessage);
             <div className="text-center">
               <p className="text-muted mb-0">
                 Pas de compte ?{" "}
-                <a
-                  href="#"
+                <Link
+                  to="/register"
                   className="text-primary text-decoration-none fw-semibold"
                 >
                   Inscrivez-vous
-                </a>
+                </Link>
               </p>
             </div>
           </div>

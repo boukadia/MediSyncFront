@@ -12,7 +12,7 @@ import { jwtDecode } from 'jwt-decode';
 
 
 
-function DoctorDashboard() {
+function DashboardPrincipalDoctor() {
   const [myAppointments, setMyAppointments] = useState<Appointment[]>([])
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([])
   const [loading, setLoading] = useState<boolean>(true);
@@ -169,7 +169,7 @@ const getDoctor = () => {
                   <i className="fas fa-flask"></i>
                 </div>
                 <div className="ms-3">
-                  <div className="stat-value"></div>
+                  <div className="stat-value">1</div>
                   <small className="text-muted">Résultats en attente</small>
                 </div>
               </div>
@@ -331,4 +331,4 @@ const getDoctor = () => {
   );
 }
 
-export default DoctorDashboard;
+export default DashboardPrincipalDoctor;
