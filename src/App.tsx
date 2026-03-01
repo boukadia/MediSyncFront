@@ -18,12 +18,15 @@ import DoctorConsultations from './pages/dashboard/doctor/DoctorConsultations.ts
 
 // Pharmacy
 import DashboardPrincipalPharmacy from './pages/dashboard/pharmacy/DashboardPrincipalPharmacy.tsx'
+import PharmacyPrescriptions from './pages/dashboard/pharmacy/PharmacyPrescriptions.tsx'
 
 // Laboratoire
 import DashboardPrincipalLab from './pages/dashboard/laboratoire/DashboardPrincipalLab.tsx'
+import LabTests from './pages/dashboard/laboratoire/LabTests.tsx'
 
 // Admin
 import DashboardPrincipalAdmin from './pages/dashboard/admin/DashboardPrincipalAdmin.tsx'
+import AdminUsers from './pages/dashboard/admin/AdminUsers.tsx'
 
 function App() {
 
@@ -51,12 +54,15 @@ function App() {
 
       {/* Pharmacy Routes */}
       <Route path='/dashboard/pharmacy' element={<ProtectedRoute allowedRole='pharmacy'><DashboardPrincipalPharmacy /></ProtectedRoute>} />
+      <Route path='/dashboard/pharmacy/prescriptions' element={<ProtectedRoute allowedRole='pharmacy'><PharmacyPrescriptions /></ProtectedRoute>} />
 
       {/* Laboratoire Routes */}
       <Route path='/dashboard/laboratoire' element={<ProtectedRoute allowedRole='laboratoire'><DashboardPrincipalLab /></ProtectedRoute>} />
+      <Route path='/dashboard/laboratoire/tests' element={<ProtectedRoute allowedRole='laboratoire'><LabTests /></ProtectedRoute>} />
 
       {/* Admin Routes */}
       <Route path='/dashboard/admin' element={<ProtectedRoute allowedRole='admin'><DashboardPrincipalAdmin /></ProtectedRoute>} />
+      <Route path='/dashboard/admin/users' element={<ProtectedRoute allowedRole='admin'><AdminUsers /></ProtectedRoute>} />
 
     </Routes>
     </BrowserRouter>
