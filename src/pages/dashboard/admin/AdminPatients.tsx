@@ -62,8 +62,8 @@ function AdminPatients() {
                                                 <td>{p.dateNaissance || '-'}</td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary"><i className="fas fa-eye"></i></button>
-                                                        <button className="btn btn-sm btn-outline-warning"><i className="fas fa-edit"></i></button>
+                                                        <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Affichage des détails du patient en cours...')}><i className="fas fa-eye"></i></button>
+                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => alert('Edition patient en cours...')}><i className="fas fa-edit"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>

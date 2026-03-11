@@ -72,7 +72,7 @@ function PharmacyPrescriptions() {
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <button className="btn btn-sm btn-outline-primary"><i className="fas fa-eye"></i></button>
+                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Détails de l\'ordonnance en cours...')}><i className="fas fa-eye"></i></button>
                                                 </td>
                                             </tr>
                                         ))}

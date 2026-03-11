@@ -79,8 +79,8 @@ function LabOrders() {
                                             <td>{getStatusBadge(order.status)}</td>
                                             <td>
                                                 <div className="d-flex gap-1">
-                                                    <button className="btn btn-sm btn-outline-primary" title="Voir ordre"><i className="fas fa-eye"></i></button>
-                                                    <button className="btn btn-sm btn-outline-success" title="Créer analyses"><i className="fas fa-plus"></i></button>
+                                                    <button className="btn btn-sm btn-outline-primary" title="Voir ordre" onClick={() => alert('Détails de l\'ordre en cours...')}><i className="fas fa-eye"></i></button>
+                                                    <button className="btn btn-sm btn-outline-success" title="Créer analyses" onClick={() => alert('Création d\'analyses en cours...')}><i className="fas fa-plus"></i></button>
                                                 </div>
                                             </td>
                                         </tr>

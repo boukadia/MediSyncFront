@@ -69,8 +69,8 @@ function AdminUsers() {
                                                 <td>{user.phone || '-'}</td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-warning"><i className="fas fa-edit"></i></button>
-                                                        <button className="btn btn-sm btn-outline-danger"><i className="fas fa-trash"></i></button>
+                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => alert('Edition utilisateur en cours')}><i className="fas fa-edit"></i></button>
+                                                        <button className="btn btn-sm btn-outline-danger" onClick={() => alert('Suppression utilisateur en cours')}><i className="fas fa-trash"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>
