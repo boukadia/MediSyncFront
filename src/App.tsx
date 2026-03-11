@@ -19,14 +19,17 @@ import DoctorConsultations from './pages/dashboard/doctor/DoctorConsultations.ts
 // Pharmacy
 import DashboardPrincipalPharmacy from './pages/dashboard/pharmacy/DashboardPrincipalPharmacy.tsx'
 import PharmacyPrescriptions from './pages/dashboard/pharmacy/PharmacyPrescriptions.tsx'
+import PharmacyInventory from './pages/dashboard/pharmacy/PharmacyInventory.tsx'
 
 // Laboratoire
 import DashboardPrincipalLab from './pages/dashboard/laboratoire/DashboardPrincipalLab.tsx'
 import LabTests from './pages/dashboard/laboratoire/LabTests.tsx'
+import LabOrders from './pages/dashboard/laboratoire/LabOrders.tsx'
 
 // Admin
 import DashboardPrincipalAdmin from './pages/dashboard/admin/DashboardPrincipalAdmin.tsx'
 import AdminUsers from './pages/dashboard/admin/AdminUsers.tsx'
+import AdminDoctors from './pages/dashboard/admin/AdminDoctors.tsx'
 
 function App() {
 
@@ -55,14 +58,17 @@ function App() {
       {/* Pharmacy Routes */}
       <Route path='/dashboard/pharmacy' element={<ProtectedRoute allowedRole='pharmacy'><DashboardPrincipalPharmacy /></ProtectedRoute>} />
       <Route path='/dashboard/pharmacy/prescriptions' element={<ProtectedRoute allowedRole='pharmacy'><PharmacyPrescriptions /></ProtectedRoute>} />
+      <Route path='/dashboard/pharmacy/inventory' element={<ProtectedRoute allowedRole='pharmacy'><PharmacyInventory /></ProtectedRoute>} />
 
       {/* Laboratoire Routes */}
       <Route path='/dashboard/laboratoire' element={<ProtectedRoute allowedRole='laboratoire'><DashboardPrincipalLab /></ProtectedRoute>} />
       <Route path='/dashboard/laboratoire/tests' element={<ProtectedRoute allowedRole='laboratoire'><LabTests /></ProtectedRoute>} />
+      <Route path='/dashboard/laboratoire/orders' element={<ProtectedRoute allowedRole='laboratoire'><LabOrders /></ProtectedRoute>} />
 
       {/* Admin Routes */}
       <Route path='/dashboard/admin' element={<ProtectedRoute allowedRole='admin'><DashboardPrincipalAdmin /></ProtectedRoute>} />
       <Route path='/dashboard/admin/users' element={<ProtectedRoute allowedRole='admin'><AdminUsers /></ProtectedRoute>} />
+      <Route path='/dashboard/admin/doctors' element={<ProtectedRoute allowedRole='admin'><AdminDoctors /></ProtectedRoute>} />
 
     </Routes>
     </BrowserRouter>
