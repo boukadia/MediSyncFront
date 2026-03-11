@@ -174,4 +174,55 @@ export async function updateAppointmentApi(
   }
 }
 
+export async function updateAppointmentStatusApi(
+  appointmentId: string,
+  status: string,
+  setErrorMessage: (message: string) => void,
+  onSuccess: () => void
+) {
+  try {
+    const token = localStorage.getItem('token');
+    
+    // If cancelling, using the cancel endpoint might be safer if the backend expects it.
+    // Wait, let's just use the PUT /appointments/:id which handles req.body
+    const url = status === 'cancelled' ? `${BASE}/appointments/${appointmentId}/cancel` : `${BASE}/appointments/${appointmentId}`;
+    const method = 'PUT';
+    
+    const res = await fetch(url, {
+      method: method,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: status === 'cancelled' ? undefined : JSON.stringify({ status })
+    });
+
+    if (!res.ok) {
+        // Try fallback to standard update if cancel endpoint fails because it wasn't confirmed
+        if (status === 'cancelled' && res.status === 400) {
+           const fallbackRes = await fetch(`${BASE}/appointments/${appointmentId}`, {
+               method: 'PUT',
+               headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+               body: JSON.stringify({ status: 'cancelled' })
+           });
+           if (!fallbackRes.ok) {
+               const data = await fallbackRes.json();
+               throw new Error(data.message || 'Erreur lors de la modification du statut');
+           }
+        } else {
+            const data = await res.json();
+            throw new Error(data.message || 'Erreur lors de la modification du statut');
+        }
+    }
+
+    setErrorMessage('');
+    onSuccess();
+    
+  } catch (error: unknown) {
+    console.error('Erreur:', error);
+    const errorMsg = error instanceof Error ? error.message : 'Erreur inconnue';
+    setErrorMessage(errorMsg);
+  }
+}
+
 export type { Appointment };

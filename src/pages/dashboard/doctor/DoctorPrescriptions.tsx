@@ -209,13 +209,13 @@ function DoctorPrescriptions() {
 
                                                 {/* Action Buttons */}
                                                 <div className="d-flex gap-2 mt-3">
-                                                    <button className="btn btn-sm btn-primary">
+                                                    <button className="btn btn-sm btn-primary" onClick={() => window.print()}>
                                                         <i className="fas fa-print me-1"></i>Imprimer
                                                     </button>
-                                                    <button className="btn btn-sm btn-outline-primary">
+                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Fonctionnalité de téléchargement en cours de développement')}>
                                                         <i className="fas fa-download me-1"></i>Télécharger
                                                     </button>
-                                                    <button className="btn btn-sm btn-outline-success">
+                                                    <button className="btn btn-sm btn-outline-success" onClick={() => alert('Fonctionnalité de renouvellement en cours de développement')}>
                                                         <i className="fas fa-redo me-1"></i>Renouveler
                                                     </button>
                                                 </div>
@@ -283,13 +283,13 @@ function DoctorPrescriptions() {
 
                                                 {/* Action Buttons */}
                                                 <div className="d-flex gap-2 mt-3">
-                                                    <button className="btn btn-sm btn-primary">
+                                                    <button className="btn btn-sm btn-primary" onClick={() => window.print()}>
                                                         <i className="fas fa-print me-1"></i>Imprimer
                                                     </button>
-                                                    <button className="btn btn-sm btn-outline-primary">
+                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Fonctionnalité de téléchargement en cours de développement')}>
                                                         <i className="fas fa-download me-1"></i>Télécharger
                                                     </button>
-                                                    <button className="btn btn-sm btn-outline-success">
+                                                    <button className="btn btn-sm btn-outline-success" onClick={() => alert('Fonctionnalité de renouvellement en cours de développement')}>
                                                         <i className="fas fa-redo me-1"></i>Renouveler
                                                     </button>
                                                 </div>

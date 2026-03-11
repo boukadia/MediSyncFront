@@ -3,14 +3,12 @@ import AdminSideBar from '../../../components/dashboard/admin/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getUsersApi, type User } from '../../../api/user.api';
-import { getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
-import { getPrescriptionsApi, type Prescription } from '../../../api/prescription.api';
+import { getAllAppointmentsApi } from '../../../api/admin.api';
 import { jwtDecode } from 'jwt-decode';
 
 function DashboardPrincipalAdmin() {
   const [users, setUsers] = useState<User[]>([]);
-  const [appointments, setAppointments] = useState<Appointment[]>([]);
-  const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
 
@@ -37,11 +35,9 @@ function DashboardPrincipalAdmin() {
         const usersData = await getUsersApi(setErrorMessage) as unknown as User[];
         if (Array.isArray(usersData)) setUsers(usersData);
 
-        const aptsData = await getAppointmentsApi(setErrorMessage);
+        // Use admin-only route for appointments
+        const aptsData = await getAllAppointmentsApi(setErrorMessage);
         if (Array.isArray(aptsData)) setAppointments(aptsData);
-
-        const prescData = await getPrescriptionsApi(setErrorMessage);
-        if (Array.isArray(prescData)) setPrescriptions(prescData);
       } catch (e) {
         console.error(e);
       } finally {
@@ -71,7 +67,6 @@ function DashboardPrincipalAdmin() {
       <AdminSideBar />
 
       <div className="container-fluid px-4 py-3">
-        {/* Page Header */}
         <div className="d-flex justify-content-between align-items-center mb-4 page-header">
           <div>
             <h1 className="h3 mb-1">Panneau d'administration</h1>
@@ -149,21 +144,16 @@ function DashboardPrincipalAdmin() {
           </div>
         </div>
 
-        {/* Content Grid */}
+        {/* Users Table */}
         <div className="row g-3">
-          {/* Recent Users Table */}
-          <div className="col-lg-10">
+          <div className="col-lg-12">
             <div className="card">
               <div className="card-header d-flex justify-content-between align-items-center">
                 <h5 className="card-title mb-0">Utilisateurs récents</h5>
               </div>
               <div className="card-body p-0">
                 {loading ? (
-                  <div className="text-center py-5">
-                    <div className="spinner-border text-primary" role="status">
-                      <span className="visually-hidden">Chargement...</span>
-                    </div>
-                  </div>
+                  <div className="text-center py-5"><div className="spinner-border text-primary"></div></div>
                 ) : (
                   <div className="table-responsive">
                     <table className="table table-hover mb-0">
@@ -207,25 +197,24 @@ function DashboardPrincipalAdmin() {
           </div>
         </div>
 
-        {/* Second Row */}
+        {/* Appointments Row */}
         <div className="row g-3 mt-3">
-          {/* Recent Appointments */}
-          <div className="col-lg-6">
+          <div className="col-lg-12">
             <div className="card">
               <div className="card-header">
                 <h6 className="card-title mb-0">Derniers rendez-vous</h6>
               </div>
               <div className="card-body">
                 <div className="d-flex flex-column gap-2">
-                  {appointments.slice(0, 5).map(apt => (
+                  {appointments.slice(0, 5).map((apt: any) => (
                     <div key={apt._id} className="notification-item">
                       <i className="fas fa-calendar-check notification-icon"></i>
                       <div className="notification-content">
                         <div>
-                          <strong>{apt.patientId?.name}</strong> → {apt.doctorId?.name}
+                          <strong>{apt.patientId?.name || 'N/A'}</strong> → {apt.doctorId?.name || 'N/A'}
                         </div>
                         <div className="d-flex gap-2 align-items-center">
-                          <small className="text-muted">{formatDate(apt.date)}</small>
+                          <small className="text-muted">{apt.date ? formatDate(apt.date) : 'N/A'}</small>
                           {getStatusBadge(apt.status)}
                         </div>
                       </div>
@@ -233,38 +222,6 @@ function DashboardPrincipalAdmin() {
                   ))}
                   {appointments.length === 0 && (
                     <p className="text-muted text-center mb-0">Aucun rendez-vous</p>
-                  )}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Recent Prescriptions */}
-          <div className="col-lg-6">
-            <div className="card">
-              <div className="card-header">
-                <h6 className="card-title mb-0">Dernières ordonnances</h6>
-              </div>
-              <div className="card-body">
-                <div className="d-flex flex-column gap-2">
-                  {prescriptions.slice(0, 5).map(presc => (
-                    <div key={presc._id} className="notification-item">
-                      <i className="fas fa-prescription-bottle notification-icon"></i>
-                      <div className="notification-content">
-                        <div>
-                          <strong>{presc.medications?.map(m => m.name).join(', ') || 'N/A'}</strong>
-                        </div>
-                        <div className="d-flex gap-2 align-items-center">
-                          <small className="text-muted">{formatDate(presc.createdAt)}</small>
-                          <span className={`badge ${presc.status === 'signed' ? 'badge-success' : 'badge-warning'}`}>
-                            {presc.status}
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                  {prescriptions.length === 0 && (
-                    <p className="text-muted text-center mb-0">Aucune ordonnance</p>
                   )}
                 </div>
               </div>

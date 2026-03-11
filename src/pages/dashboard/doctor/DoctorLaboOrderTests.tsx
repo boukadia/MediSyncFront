@@ -197,10 +197,10 @@ function DoctorLaboOrderTests() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails">
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du test: ' + test.name)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
-                                                        <button className="btn btn-sm btn-outline-info" title="Contacter labo">
+                                                        <button className="btn btn-sm btn-outline-info" title="Contacter labo" onClick={() => alert('Contact: ' + test.labOrderId?.laboratoireId?.name)}>
                                                             <i className="fas fa-phone"></i>
                                                         </button>
                                                     </div>
@@ -273,10 +273,10 @@ function DoctorLaboOrderTests() {
                                                 <td>{test.date ? formatDate(test.date) : 'N/A'}</td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails">
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du test: ' + test.name)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
-                                                        <button className="btn btn-sm btn-outline-success" title="Télécharger">
+                                                        <button className="btn btn-sm btn-outline-success" title="Télécharger" onClick={() => alert('Téléchargement en cours...')}>
                                                             <i className="fas fa-download"></i>
                                                         </button>
                                                     </div>
@@ -363,11 +363,11 @@ function DoctorLaboOrderTests() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails">
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du test: ' + test.name)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
                                                         {test.labOrderId?.status === 'completed' && (
-                                                            <button className="btn btn-sm btn-outline-success" title="Télécharger">
+                                                            <button className="btn btn-sm btn-outline-success" title="Télécharger" onClick={() => alert('Téléchargement en cours...')}>
                                                                 <i className="fas fa-download"></i>
                                                             </button>
                                                         )}

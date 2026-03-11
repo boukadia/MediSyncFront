@@ -37,15 +37,23 @@ function DoctorAppointments() {
         }
     };
 
+    const fetchAppointments = async () => {
+        setLoading(true);
+        const appointments = await getAppointmentsApi(setErrorMessage);
+        setMyAppointments(appointments);
+        setLoading(false);
+    };
+
     useEffect(() => {
-        const fetchAppointments = async () => {
-            setLoading(true);
-            const appointments = await getAppointmentsApi(setErrorMessage);
-            setMyAppointments(appointments);
-            setLoading(false);
-        };
         fetchAppointments();
     }, []);
+
+    const handleStatusChange = async (id: string, status: string) => {
+        const { updateAppointmentStatusApi } = await import('../../../api/appointment.api');
+        await updateAppointmentStatusApi(id, status, setErrorMessage, () => {
+            fetchAppointments(); // Refresh the list
+        });
+    };
 
     // Filter appointments by status
     const confirmedAppointments = myAppointments.filter(apt => apt.status === 'confirmed');
@@ -191,10 +199,10 @@ function DoctorAppointments() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails">
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du patient: ' + appointment.patientId?.name)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
-                                                        <button className="btn btn-sm btn-outline-success" title="Commencer consultation">
+                                                        <button className="btn btn-sm btn-outline-success" title="Commencer consultation" onClick={() => window.location.href = '/dashboard/doctor/consultations'}>
                                                             <i className="fas fa-stethoscope"></i>
                                                         </button>
                                                     </div>
@@ -247,10 +255,10 @@ function DoctorAppointments() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-success" title="Confirmer">
+                                                        <button onClick={() => handleStatusChange(appointment._id!, 'confirmed')} className="btn btn-sm btn-outline-success" title="Confirmer">
                                                             <i className="fas fa-check"></i>
                                                         </button>
-                                                        <button className="btn btn-sm btn-outline-danger" title="Refuser">
+                                                        <button onClick={() => handleStatusChange(appointment._id!, 'cancelled')} className="btn btn-sm btn-outline-danger" title="Refuser">
                                                             <i className="fas fa-times"></i>
                                                         </button>
                                                     </div>
@@ -303,7 +311,7 @@ function DoctorAppointments() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails">
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du rendez-vous: ' + appointment.consultationReason)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
                                                     </div>

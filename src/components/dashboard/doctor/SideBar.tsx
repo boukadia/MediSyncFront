@@ -91,7 +91,7 @@ const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
                 <span>Ordres de labo</span>
               </a>
               <a
-                href="#"
+                href="/dashboard/doctor/patients"
                 className="nav-link d-flex align-items-center gap-3 px-3 py-2 rounded-3 text-decoration-none text-dark"
               >
                 <i className="fas fa-user-group text-primary" style={{ width: '18px', textAlign: 'center' }}></i>

@@ -60,15 +60,29 @@ console.log("eeeeee",myConsultations);
         }
     };
 
+    const [selectedConsultation, setSelectedConsultation] = useState<Consultation | null>(null);
+    const [showModal, setShowModal] = useState<'details' | 'edit' | null>(null);
+    const [editData, setEditData] = useState({ diagnostic: '', symptomes: '', notes: '' });
+
+    const fetchConsultations = async () => {
+        setLoading(true);
+        const consultations = await getMyConsultationsApi(setErrorMessage);
+        setMyConsultations(consultations);
+        setLoading(false);
+    };
+
     useEffect(() => {
-        const fetchConsultations = async () => {
-            setLoading(true);
-            const consultations = await getMyConsultationsApi(setErrorMessage);
-            setMyConsultations(consultations);
-            setLoading(false);
-        };
         fetchConsultations();
     }, []);
+
+    const handleEditSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        if (!selectedConsultation) return;
+        const { updateConsultationApi } = await import('../../../api/consultation.api');
+        await updateConsultationApi(selectedConsultation._id, editData, setErrorMessage);
+        setShowModal(null);
+        fetchConsultations(); // refresh
+    };
 
     // Filter consultations by date
     const todayConsultations = myConsultations.filter((consultation) => {
@@ -219,10 +233,29 @@ console.log("eeeeee",myConsultations);
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-success" title="Modifier consultation">
+                                                        <button 
+                                                            className="btn btn-sm btn-success" 
+                                                            title="Modifier consultation"
+                                                            onClick={() => {
+                                                                setSelectedConsultation(consultation);
+                                                                setEditData({ 
+                                                                    diagnostic: consultation.diagnostic || '', 
+                                                                    symptomes: consultation.symptomes || '', 
+                                                                    notes: consultation.notes || '' 
+                                                                });
+                                                                setShowModal('edit');
+                                                            }}
+                                                        >
                                                             <i className="fas fa-edit"></i>
                                                         </button>
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails">
+                                                        <button 
+                                                            className="btn btn-sm btn-outline-primary" 
+                                                            title="Voir détails"
+                                                            onClick={() => {
+                                                                setSelectedConsultation(consultation);
+                                                                setShowModal('details');
+                                                            }}
+                                                        >
                                                             <i className="fas fa-eye"></i>
                                                         </button>
                                                         <button className="btn btn-sm btn-outline-info" title="Historique">
@@ -298,10 +331,29 @@ console.log("eeeeee",myConsultations);
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails">
+                                                        <button 
+                                                            className="btn btn-sm btn-outline-primary" 
+                                                            title="Voir détails"
+                                                            onClick={() => {
+                                                                setSelectedConsultation(consultation);
+                                                                setShowModal('details');
+                                                            }}
+                                                        >
                                                             <i className="fas fa-eye"></i>
                                                         </button>
-                                                        <button className="btn btn-sm btn-outline-warning" title="Modifier">
+                                                        <button 
+                                                            className="btn btn-sm btn-outline-warning" 
+                                                            title="Modifier"
+                                                            onClick={() => {
+                                                                setSelectedConsultation(consultation);
+                                                                setEditData({ 
+                                                                    diagnostic: consultation.diagnostic || '', 
+                                                                    symptomes: consultation.symptomes || '', 
+                                                                    notes: consultation.notes || '' 
+                                                                });
+                                                                setShowModal('edit');
+                                                            }}
+                                                        >
                                                             <i className="fas fa-edit"></i>
                                                         </button>
                                                         <button className="btn btn-sm btn-outline-info" title="Voir dossier">
@@ -322,6 +374,68 @@ console.log("eeeeee",myConsultations);
                     </div>
                 </div>
             </div>
+
+            {/* Modals */}
+            {showModal && selectedConsultation && (
+                <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">
+                                    {showModal === 'edit' ? 'Modifier Consultation' : 'Détails de la consultation'}
+                                </h5>
+                                <button type="button" className="btn-close" onClick={() => setShowModal(null)}></button>
+                            </div>
+                            <div className="modal-body">
+                                {showModal === 'details' ? (
+                                    <div>
+                                        <p><strong>Patient:</strong> {selectedConsultation.appointment?.patientId?.name || 'N/A'}</p>
+                                        <p><strong>Date:</strong> {formatDate(selectedConsultation.dateConsultation)} à {formatTime(selectedConsultation.dateConsultation)}</p>
+                                        <p><strong>Type:</strong> {selectedConsultation.appointment?.typeConsultation || 'N/A'}</p>
+                                        <hr />
+                                        <p><strong>Diagnostic:</strong> {selectedConsultation.diagnostic || 'Non spécifié'}</p>
+                                        <p><strong>Symptômes:</strong> {selectedConsultation.symptomes || '-'}</p>
+                                        <p><strong>Notes:</strong> {selectedConsultation.notes || '-'}</p>
+                                    </div>
+                                ) : (
+                                    <form id="editForm" onSubmit={handleEditSubmit}>
+                                        <div className="mb-3">
+                                            <label className="form-label">Diagnostic</label>
+                                            <textarea 
+                                                className="form-control" 
+                                                value={editData.diagnostic}
+                                                onChange={(e) => setEditData({...editData, diagnostic: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">Symptômes</label>
+                                            <textarea 
+                                                className="form-control" 
+                                                value={editData.symptomes}
+                                                onChange={(e) => setEditData({...editData, symptomes: e.target.value})}
+                                            />
+                                        </div>
+                                        <div className="mb-3">
+                                            <label className="form-label">Notes</label>
+                                            <textarea 
+                                                className="form-control" 
+                                                value={editData.notes}
+                                                onChange={(e) => setEditData({...editData, notes: e.target.value})}
+                                            />
+                                        </div>
+                                    </form>
+                                )}
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(null)}>Fermer</button>
+                                {showModal === 'edit' && (
+                                    <button type="submit" form="editForm" className="btn btn-primary">Enregistrer</button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 }
