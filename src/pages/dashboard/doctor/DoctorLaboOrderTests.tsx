@@ -3,6 +3,7 @@ import SideBar from '../../../components/dashboard/doctor/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getMyTestsApi, type Test } from '../../../api/test.api';
+import { toast } from 'react-toastify';
 
 function DoctorLaboOrderTests() {
     const [errorMessage, setErrorMessage] = useState('');
@@ -197,10 +198,10 @@ function DoctorLaboOrderTests() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du test: ' + test.name)}>
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => toast.info('Détails du test: ' + test.name)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
-                                                        <button className="btn btn-sm btn-outline-info" title="Contacter labo" onClick={() => alert('Contact: ' + test.labOrderId?.laboratoireId?.name)}>
+                                                        <button className="btn btn-sm btn-outline-info" title="Contacter labo" onClick={() => toast.info('Contact: ' + test.labOrderId?.laboratoireId?.name)}>
                                                             <i className="fas fa-phone"></i>
                                                         </button>
                                                     </div>
@@ -273,10 +274,10 @@ function DoctorLaboOrderTests() {
                                                 <td>{test.date ? formatDate(test.date) : 'N/A'}</td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du test: ' + test.name)}>
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => toast.info('Détails du test: ' + test.name)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
-                                                        <button className="btn btn-sm btn-outline-success" title="Télécharger" onClick={() => alert('Téléchargement en cours...')}>
+                                                        <button className="btn btn-sm btn-outline-success" title="Télécharger" onClick={() => toast.info('Téléchargement en cours...')}>
                                                             <i className="fas fa-download"></i>
                                                         </button>
                                                     </div>
@@ -363,11 +364,11 @@ function DoctorLaboOrderTests() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du test: ' + test.name)}>
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => toast.info('Détails du test: ' + test.name)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
                                                         {test.labOrderId?.status === 'completed' && (
-                                                            <button className="btn btn-sm btn-outline-success" title="Télécharger" onClick={() => alert('Téléchargement en cours...')}>
+                                                            <button className="btn btn-sm btn-outline-success" title="Télécharger" onClick={() => toast.info('Téléchargement en cours...')}>
                                                                 <i className="fas fa-download"></i>
                                                             </button>
                                                         )}

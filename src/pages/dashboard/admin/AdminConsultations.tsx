@@ -3,6 +3,7 @@ import AdminSideBar from '../../../components/dashboard/admin/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getAllConsultationsApi } from '../../../api/admin.api';
+import { toast } from 'react-toastify';
 
 function AdminConsultations() {
     const [consultations, setConsultations] = useState<any[]>([]);
@@ -57,7 +58,7 @@ function AdminConsultations() {
                                                 <td>{c.diagnostic || '-'}</td>
                                                 <td>{c.dateConsultation ? formatDate(c.dateConsultation) : '-'}</td>
                                                 <td>
-                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Affichage de la consultation en cours...')}><i className="fas fa-eye"></i></button>
+                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => toast.info('Affichage de la consultation en cours...')}><i className="fas fa-eye"></i></button>
                                                 </td>
                                             </tr>
                                         ))}

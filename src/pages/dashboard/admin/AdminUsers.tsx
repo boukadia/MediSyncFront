@@ -3,6 +3,7 @@ import AdminSideBar from '../../../components/dashboard/admin/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getUsersApi, type User } from '../../../api/user.api';
+import { toast } from 'react-toastify';
 
 function AdminUsers() {
     const [users, setUsers] = useState<User[]>([]);
@@ -69,8 +70,8 @@ function AdminUsers() {
                                                 <td>{user.phone || '-'}</td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => alert('Edition utilisateur en cours')}><i className="fas fa-edit"></i></button>
-                                                        <button className="btn btn-sm btn-outline-danger" onClick={() => alert('Suppression utilisateur en cours')}><i className="fas fa-trash"></i></button>
+                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => toast.info('Edition utilisateur en cours')}><i className="fas fa-edit"></i></button>
+                                                        <button className="btn btn-sm btn-outline-danger" onClick={() => toast.error('Suppression utilisateur en cours')}><i className="fas fa-trash"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>

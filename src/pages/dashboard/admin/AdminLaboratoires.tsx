@@ -3,6 +3,7 @@ import AdminSideBar from '../../../components/dashboard/admin/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getAllLaboratoiresApi } from '../../../api/admin.api';
+import { toast } from 'react-toastify';
 
 function AdminLaboratoires() {
     const [labs, setLabs] = useState<any[]>([]);
@@ -58,8 +59,8 @@ function AdminLaboratoires() {
                                                 <td>{lab.address || '-'}</td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => alert('Edition laboratoire en cours...')}><i className="fas fa-edit"></i></button>
-                                                        <button className="btn btn-sm btn-outline-danger" onClick={() => alert('Suppression laboratoire en cours...')}><i className="fas fa-trash"></i></button>
+                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => toast.info('Edition laboratoire en cours...')}><i className="fas fa-edit"></i></button>
+                                                        <button className="btn btn-sm btn-outline-danger" onClick={() => toast.error('Suppression laboratoire en cours...')}><i className="fas fa-trash"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>

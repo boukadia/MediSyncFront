@@ -3,6 +3,7 @@ import AdminSideBar from '../../../components/dashboard/admin/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getUsersApi, type User } from '../../../api/user.api';
+import { toast } from 'react-toastify';
 
 function AdminPatients() {
     const [patients, setPatients] = useState<User[]>([]);
@@ -62,8 +63,8 @@ function AdminPatients() {
                                                 <td>{p.dateNaissance || '-'}</td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Affichage des détails du patient en cours...')}><i className="fas fa-eye"></i></button>
-                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => alert('Edition patient en cours...')}><i className="fas fa-edit"></i></button>
+                                                        <button className="btn btn-sm btn-outline-primary" onClick={() => toast.info('Affichage des détails du patient en cours...')}><i className="fas fa-eye"></i></button>
+                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => toast.info('Edition patient en cours...')}><i className="fas fa-edit"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>

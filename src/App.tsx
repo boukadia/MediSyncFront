@@ -39,11 +39,14 @@ import AdminLaboratoires from './pages/dashboard/admin/AdminLaboratoires.tsx'
 import AdminConsultations from './pages/dashboard/admin/AdminConsultations.tsx'
 import AdminSpecialites from './pages/dashboard/admin/AdminSpecialites.tsx'
 import AdminAppointments from './pages/dashboard/admin/AdminAppointments.tsx'
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
 
   return (
     <>
+    <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} />
     <BrowserRouter>
     <Routes>
       <Route path='/' element={<Home />}/>

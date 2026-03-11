@@ -2,6 +2,7 @@ import { useState } from 'react';
 import LabSideBar from '../../../components/dashboard/laboratoire/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { toast } from 'react-toastify';
 
 function LabOrders() {
     const [searchTerm, setSearchTerm] = useState('');
@@ -79,8 +80,8 @@ function LabOrders() {
                                             <td>{getStatusBadge(order.status)}</td>
                                             <td>
                                                 <div className="d-flex gap-1">
-                                                    <button className="btn btn-sm btn-outline-primary" title="Voir ordre" onClick={() => alert('Détails de l\'ordre en cours...')}><i className="fas fa-eye"></i></button>
-                                                    <button className="btn btn-sm btn-outline-success" title="Créer analyses" onClick={() => alert('Création d\'analyses en cours...')}><i className="fas fa-plus"></i></button>
+                                                    <button className="btn btn-sm btn-outline-primary" title="Voir ordre" onClick={() => toast.info('Détails de l\'ordre en cours...')}><i className="fas fa-eye"></i></button>
+                                                    <button className="btn btn-sm btn-outline-success" title="Créer analyses" onClick={() => toast.info('Création d\'analyses en cours...')}><i className="fas fa-plus"></i></button>
                                                 </div>
                                             </td>
                                         </tr>

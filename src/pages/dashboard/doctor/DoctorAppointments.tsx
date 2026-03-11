@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import SideBar from '../../../components/dashboard/doctor/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { getAppointmentsApi, type Appointment } from '../../../api/appointment.api';
+import { getAppointmentsApi, updateAppointmentStatusApi, type Appointment } from '../../../api/appointment.api';
+import { toast } from 'react-toastify';
 
 function DoctorAppointments() {
     const [errorMessage, setErrorMessage] = useState('');
@@ -199,7 +200,7 @@ function DoctorAppointments() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du patient: ' + appointment.patientId?.name)}>
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => toast.info('Détails du patient: ' + appointment.patientId?.name)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
                                                         <button className="btn btn-sm btn-outline-success" title="Commencer consultation" onClick={() => window.location.href = '/dashboard/doctor/consultations'}>
@@ -311,7 +312,7 @@ function DoctorAppointments() {
                                                 </td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => alert('Détails du rendez-vous: ' + appointment.consultationReason)}>
+                                                        <button className="btn btn-sm btn-outline-primary" title="Voir détails" onClick={() => toast.info('Détails du rendez-vous: ' + appointment.consultationReason)}>
                                                             <i className="fas fa-eye"></i>
                                                         </button>
                                                     </div>

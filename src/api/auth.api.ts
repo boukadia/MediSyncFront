@@ -1,4 +1,5 @@
 import { jwtDecode } from "jwt-decode";
+import { toast } from 'react-toastify';
 
 // auth.api
 const BASE = import.meta.env.VITE_API;
@@ -70,7 +71,7 @@ export async function loginApi(email: string, password: string,navigate:any,setE
         // navigate("/dashboard"); 
       } else {
         console.error("Aucun token reçu !");
-        alert("Erreur : Aucun token reçu !");
+        toast.error("Erreur : Aucun token reçu !");
       }
       
   })
@@ -160,7 +161,7 @@ export async function registerApi( // Common fields for all roles
       setErrorMessage("");
       
       // Show success message
-      alert("Inscription réussie! Vous pouvez maintenant vous connecter.");
+      toast.success("Inscription réussie! Vous pouvez maintenant vous connecter.");
       
       // Navigate to login page
       navigate("/login");

@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import { registerApi } from '../../api/auth.api';
 import { getSpecialiteApi, type Specialite } from '../../api/specialite.api';
+import { toast } from 'react-toastify';
 
 function RegisterForm() {
     const navigate=useNavigate();
@@ -157,20 +158,20 @@ console.log(role);
 };
 
          if (!email) {
-        alert("L'email est requis !");
+        toast.warning("L'email est requis !");
         return;
     }
 
     if (!validateEmail(email)) {
-        alert("L'email n'est pas valide !");
+        toast.warning("L'email n'est pas valide !");
         return;
     }
         if (password !== confirmPassword) {
-        alert("Les mots de passe ne correspondent pas !");
+        toast.warning("Les mots de passe ne correspondent pas !");
         return;
     }
     if (password.length < 6) {
-        alert("Le mot de passe doit contenir au moins 6 caractères !");
+        toast.warning("Le mot de passe doit contenir au moins 6 caractères !");
         return;
     }
     console.log("eeee");

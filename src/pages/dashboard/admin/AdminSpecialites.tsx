@@ -3,6 +3,7 @@ import AdminSideBar from '../../../components/dashboard/admin/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getSpecialiteApi, type Specialite } from '../../../api/specialite.api';
+import { toast } from 'react-toastify';
 
 function AdminSpecialites() {
     const [specialites, setSpecialites] = useState<Specialite[]>([]);
@@ -27,7 +28,7 @@ function AdminSpecialites() {
                         <h2><i className="fas fa-tags text-primary me-2"></i>Spécialités</h2>
                         <p className="text-muted">Gestion des spécialités médicales</p>
                     </div>
-                    <button className="btn btn-primary" onClick={() => alert('Ajout de spécialité en cours...')}><i className="fas fa-plus me-2"></i>Ajouter</button>
+                    <button className="btn btn-primary" onClick={() => toast.info('Ajout de spécialité en cours...')}><i className="fas fa-plus me-2"></i>Ajouter</button>
                 </div>
                 {errorMessage && (
                     <div className="alert alert-danger"><i className="fas fa-exclamation-circle me-2"></i>{errorMessage}</div>
@@ -53,8 +54,8 @@ function AdminSpecialites() {
                                                 <td>{s.description || '-'}</td>
                                                 <td>
                                                     <div className="d-flex gap-1">
-                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => alert('Edition spécialité en cours...')}><i className="fas fa-edit"></i></button>
-                                                        <button className="btn btn-sm btn-outline-danger" onClick={() => alert('Suppression spécialité en cours...')}><i className="fas fa-trash"></i></button>
+                                                        <button className="btn btn-sm btn-outline-warning" onClick={() => toast.info('Edition spécialité en cours...')}><i className="fas fa-edit"></i></button>
+                                                        <button className="btn btn-sm btn-outline-danger" onClick={() => toast.error('Suppression spécialité en cours...')}><i className="fas fa-trash"></i></button>
                                                     </div>
                                                 </td>
                                             </tr>

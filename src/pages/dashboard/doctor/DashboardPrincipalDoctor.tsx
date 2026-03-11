@@ -7,7 +7,7 @@ import type { Prescription } from '../../../types/prescription';
 import { getPrescriptionsApi } from '../../../api/prescription.api';
 import SideBar from '../../../components/dashboard/doctor/SideBar';
 import { jwtDecode } from 'jwt-decode';
-
+import { toast } from 'react-toastify';
 
 
 
@@ -234,7 +234,7 @@ function DashboardPrincipalDoctor() {
                               <button
                                 className="btn btn-outline-primary btn-sm"
                                 title="Voir dossier"
-                                onClick={() => alert('Dossier de ' + appointment.patientId?.name)}
+                                onClick={() => toast.info('Dossier de ' + appointment.patientId?.name)}
                               >
                                 <i className="fas fa-folder-open"></i>
                               </button>
@@ -260,7 +260,7 @@ function DashboardPrincipalDoctor() {
                                 <button
                                   className="btn btn-outline-warning btn-sm"
                                   title="Envoyer rappel"
-                                  onClick={() => alert(`Rappel envoyé à ${appointment.patientId?.name}`)}
+                                  onClick={() => toast.success(`Rappel envoyé à ${appointment.patientId?.name}`)}
                                 >
                                   <i className="fas fa-bell"></i>
                                 </button>
@@ -269,7 +269,7 @@ function DashboardPrincipalDoctor() {
                                 <button
                                   className="btn btn-outline-secondary btn-sm"
                                   title="Reprogrammer"
-                                  onClick={() => alert('Option de reprogrammation en cours de développement')}
+                                  onClick={() => toast.info('Option de reprogrammation en cours de développement')}
                                 >
                                   <i className="fas fa-rotate"></i>
                                 </button>

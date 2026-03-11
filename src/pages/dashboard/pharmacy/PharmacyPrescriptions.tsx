@@ -3,6 +3,7 @@ import PharmacySideBar from '../../../components/dashboard/pharmacy/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getPrescriptionsApi, type Prescription } from '../../../api/prescription.api';
+import { toast } from 'react-toastify';
 
 function PharmacyPrescriptions() {
     const [prescriptions, setPrescriptions] = useState<Prescription[]>([]);
@@ -72,7 +73,7 @@ function PharmacyPrescriptions() {
                                                     </span>
                                                 </td>
                                                 <td>
-                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Détails de l\'ordonnance en cours...')}><i className="fas fa-eye"></i></button>
+                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => toast.info('Détails de l\'ordonnance en cours...')}><i className="fas fa-eye"></i></button>
                                                 </td>
                                             </tr>
                                         ))}

@@ -13,8 +13,9 @@ import { getSpecialiteApi, type Specialite } from "../../../api/specialite.api";
 import { getDoctorsApi, type User } from "../../../api/user.api";
 import {
   getDisponibilitesApi,
-  type Disponibilite,
-} from "../../../api/disponibilite.api";
+  setCreneauDisponibiliteApi,
+} from "../../../api/disponibility.api";
+import { toast } from 'react-toastify';
 import type { Creneau } from "../../../types/creneau";
 import { getCreneauxByIdApi } from "../../../api/creneau.api";
 import Header from "../../../components/dashboard/Patient/Header";
@@ -220,9 +221,10 @@ console.log('userrole',decodedToken);
       const appointments = await getAppointmentsApi(setErrorMessage);
       setMyAppointments(appointments);
 
-      alert("Rendez-vous créé avec succès!");
+      toast.success("Rendez-vous créé avec succès!");
     } catch (error) {
       console.error("Error creating appointment:", error);
+      toast.error("Erreur lors de la création du rendez-vous");
     } finally {
       setLoading(false);
     }
@@ -245,18 +247,18 @@ console.log('userrole',decodedToken);
     const appointment = myAppointments.find((apt) => apt._id === appointmentId);
 
     if (!appointment) {
-      alert("Rendez-vous non trouvé");
+      toast.error("Rendez-vous non trouvé");
       return;
     }
 
     // Check if appointment can be cancelled
     if (appointment.status !== "confirmed") {
       if (appointment.status === "pending") {
-        alert(
+        toast.warning(
           "Ce rendez-vous est en attente de confirmation. Vous ne pouvez pas le modifier pour le moment."
         );
       } else {
-        alert("Ce rendez-vous ne peut pas être annulé.");
+        toast.error("Ce rendez-vous ne peut pas être annulé.");
       }
       return;
     }
@@ -267,10 +269,11 @@ console.log('userrole',decodedToken);
         await cancelAppointmentApi(appointmentId, setErrorMessage, async () => {
           const appointments = await getAppointmentsApi(setErrorMessage);
           setMyAppointments(appointments);
-          alert("Rendez-vous annulé avec succès!");
+          toast.success("Rendez-vous annulé avec succès!");
         });
       } catch (error) {
         console.error("Error cancelling appointment:", error);
+        toast.error("Erreur lors de l'annulation du rendez-vous");
       } finally {
         setLoading(false);
       }

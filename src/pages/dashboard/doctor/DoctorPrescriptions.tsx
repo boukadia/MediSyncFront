@@ -3,6 +3,7 @@ import SideBar from '../../../components/dashboard/doctor/SideBar';
 import '../../../styles/pages/doctorDashboard.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { getPrescriptionsApi, type Prescription, deletePrescriptionApi } from '../../../api/prescription.api';
+import { toast } from 'react-toastify';
 
 function DoctorPrescriptions() {
     const [errorMessage, setErrorMessage] = useState('');
@@ -212,10 +213,10 @@ function DoctorPrescriptions() {
                                                     <button className="btn btn-sm btn-primary" onClick={() => window.print()}>
                                                         <i className="fas fa-print me-1"></i>Imprimer
                                                     </button>
-                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Fonctionnalité de téléchargement en cours de développement')}>
+                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => toast.info('Fonctionnalité de téléchargement en cours de développement')}>
                                                         <i className="fas fa-download me-1"></i>Télécharger
                                                     </button>
-                                                    <button className="btn btn-sm btn-outline-success" onClick={() => alert('Fonctionnalité de renouvellement en cours de développement')}>
+                                                    <button className="btn btn-sm btn-outline-success" onClick={() => toast.info('Fonctionnalité de renouvellement en cours de développement')}>
                                                         <i className="fas fa-redo me-1"></i>Renouveler
                                                     </button>
                                                 </div>
@@ -286,10 +287,10 @@ function DoctorPrescriptions() {
                                                     <button className="btn btn-sm btn-primary" onClick={() => window.print()}>
                                                         <i className="fas fa-print me-1"></i>Imprimer
                                                     </button>
-                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => alert('Fonctionnalité de téléchargement en cours de développement')}>
+                                                    <button className="btn btn-sm btn-outline-primary" onClick={() => toast.info('Fonctionnalité de téléchargement en cours de développement')}>
                                                         <i className="fas fa-download me-1"></i>Télécharger
                                                     </button>
-                                                    <button className="btn btn-sm btn-outline-success" onClick={() => alert('Fonctionnalité de renouvellement en cours de développement')}>
+                                                    <button className="btn btn-sm btn-outline-success" onClick={() => toast.info('Fonctionnalité de renouvellement en cours de développement')}>
                                                         <i className="fas fa-redo me-1"></i>Renouveler
                                                     </button>
                                                 </div>
