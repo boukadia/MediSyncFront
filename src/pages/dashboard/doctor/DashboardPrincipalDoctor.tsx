@@ -18,6 +18,8 @@ function DashboardPrincipalDoctor() {
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [activePatients, setActivePatients] = useState<number>(0);
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [showFilters, setShowFilters] = useState<boolean>(false);
 
   // Function to format date
   const formatDate = (dateString: string) => {
@@ -68,7 +70,7 @@ function DashboardPrincipalDoctor() {
   const filterTodayAppointments=todayAppointment.filter((appointment)=>appointment.status==='confirmed')
 
 
-const getDoctor = () => {
+  const getDoctor = () => {
     const token = localStorage.getItem("token");
     if (token) {
       const decoded: { userId?: string; id?: string;name?: string } = jwtDecode(token);
@@ -76,11 +78,11 @@ const getDoctor = () => {
     }
     return null;
   };
-  console.log(getDoctor()?.name);
-  
-  
 
-
+  const filteredAppointments = myAppointments.filter(apt => 
+    apt.patientId?.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+    apt.typeConsultation?.toLowerCase().includes(searchTerm.toLowerCase())
+  );
   const getStatusBadge = (status: string) => {
     switch (status) {
       case 'confirmed':
@@ -185,14 +187,25 @@ const getDoctor = () => {
               <div className="card-header d-flex justify-content-between align-items-center">
                 <h5 className="card-title mb-0">Derniers rendez-vous</h5>
                 <div className="d-flex gap-2">
-                  <button className="btn btn-outline-secondary btn-sm">
+                  <button className="btn btn-outline-secondary btn-sm" onClick={() => setShowFilters(!showFilters)}>
                     <i className="fas fa-filter me-1"></i>Filtres
                   </button>
-                  <button className="btn btn-primary btn-sm">
+                  <button className="btn btn-primary btn-sm" onClick={() => window.location.href = '/dashboard/doctor/appointments'}>
                     <i className="fas fa-plus me-1"></i>Nouveau
                   </button>
                 </div>
               </div>
+              {showFilters && (
+                <div className="card-body border-bottom py-2 bg-light">
+                  <input 
+                    type="text" 
+                    className="form-control form-control-sm" 
+                    placeholder="Chercher par nom du patient ou type de consultation..." 
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
+              )}
               <div className="card-body p-0">
                 <div className="table-responsive">
                   <table className="table table-hover mb-0">
@@ -208,19 +221,20 @@ const getDoctor = () => {
                       </tr>
                     </thead>
                     <tbody>
-                      {myAppointments.map((appointment) => (
+                      {filteredAppointments.map((appointment) => (
                         <tr key={appointment._id}>
-                          <td>{appointment.patientId.name}</td>
+                          <td>{appointment.patientId?.name}</td>
                           <td>{formatDate(appointment.date)}</td>
-                          <td>{appointment.creneau.heure_debut}</td>
+                          <td>{appointment.creneau?.heure_debut}</td>
                           <td>{getTypeBadge(appointment.typeConsultation)}</td>
-                          <td>{getStatusBadge(appointment.consultationReason)}</td>
+                          <td>{appointment.consultationReason}</td>
                           <td>{getStatusBadge(appointment.status)}</td>
                           <td>
                             <div className="d-flex gap-1">
                               <button
                                 className="btn btn-outline-primary btn-sm"
                                 title="Voir dossier"
+                                onClick={() => alert('Dossier de ' + appointment.patientId?.name)}
                               >
                                 <i className="fas fa-folder-open"></i>
                               </button>
@@ -229,12 +243,14 @@ const getDoctor = () => {
                                   <button
                                     className="btn btn-outline-success btn-sm"
                                     title="Prescrire"
+                                    onClick={() => window.location.href = '/dashboard/doctor/prescriptions'}
                                   >
                                     <i className="fas fa-prescription-bottle"></i>
                                   </button>
                                   <button
                                     className="btn btn-outline-info btn-sm"
                                     title="Créer ordre de labo"
+                                    onClick={() => window.location.href = '/dashboard/doctor/labo-orders'}
                                   >
                                     <i className="fas fa-flask"></i>
                                   </button>
@@ -244,6 +260,7 @@ const getDoctor = () => {
                                 <button
                                   className="btn btn-outline-warning btn-sm"
                                   title="Envoyer rappel"
+                                  onClick={() => alert(`Rappel envoyé à ${appointment.patientId?.name}`)}
                                 >
                                   <i className="fas fa-bell"></i>
                                 </button>
@@ -252,6 +269,7 @@ const getDoctor = () => {
                                 <button
                                   className="btn btn-outline-secondary btn-sm"
                                   title="Reprogrammer"
+                                  onClick={() => alert('Option de reprogrammation en cours de développement')}
                                 >
                                   <i className="fas fa-rotate"></i>
                                 </button>
