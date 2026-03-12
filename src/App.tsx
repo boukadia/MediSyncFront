@@ -16,6 +16,15 @@ import DoctorAppointments from './pages/dashboard/doctor/DoctorAppointments.tsx'
 import DoctorLaboOrderTests from './pages/dashboard/doctor/DoctorLaboOrderTests.tsx'
 import DoctorConsultations from './pages/dashboard/doctor/DoctorConsultations.tsx'
 
+// Pharmacy
+import DashboardPrincipalPharmacy from './pages/dashboard/pharmacy/DashboardPrincipalPharmacy.tsx'
+
+// Laboratoire
+import DashboardPrincipalLab from './pages/dashboard/laboratoire/DashboardPrincipalLab.tsx'
+
+// Admin
+import DashboardPrincipalAdmin from './pages/dashboard/admin/DashboardPrincipalAdmin.tsx'
+
 function App() {
 
   return (
@@ -26,29 +35,34 @@ function App() {
       <Route path='/login' element={<Login />}/>
       <Route path='/register' element={<Register />}/>
       <Route path="/unothorized" element={<Unothorized />} />
-      {/* <Route path="/logout" element={<Logout />} /> */}
-      <Route path='/dashboard/doctor' element={<ProtectedRoute allowedRole='doctor'><DashboardPrincipalDoctor/></ProtectedRoute>}/>' 
+
+      {/* Doctor Routes */}
+      <Route path='/dashboard/doctor' element={<ProtectedRoute allowedRole='doctor'><DashboardPrincipalDoctor/></ProtectedRoute>}/>
       <Route path='/dashboard/doctor/prescriptions' element={<ProtectedRoute allowedRole='doctor'><DoctorPrescriptions /></ProtectedRoute>} />
       <Route path='/dashboard/doctor/appointments' element={<ProtectedRoute allowedRole='doctor'><DoctorAppointments /></ProtectedRoute>} />
       <Route path='/dashboard/doctor/consultations' element={<ProtectedRoute allowedRole='doctor'><DoctorConsultations /></ProtectedRoute>} />
       <Route path='/dashboard/doctor/labo-tests' element={<ProtectedRoute allowedRole='doctor'><DoctorLaboOrderTests /></ProtectedRoute>} />
+
+      {/* Patient Routes */}
       <Route path="/dashboard/patient/appointments" element={<ProtectedRoute allowedRole='patient'><Appointment /></ProtectedRoute>} />  
       <Route path="/dashboard/patient/tests" element={<ProtectedRoute allowedRole='patient'><Test /></ProtectedRoute>} />  
-      <Route path='/dashboard/patient/prescriptions' element={ <ProtectedRoute allowedRole={'patient'}><Prescriptions /></ProtectedRoute>}/>
-      <Route path='/dashboard/patient' element={
-        <ProtectedRoute allowedRole={'patient'}>
-            <DashboardPrincipalPatient />
-        </ProtectedRoute>
-        }
-      />
+      <Route path='/dashboard/patient/prescriptions' element={<ProtectedRoute allowedRole='patient'><Prescriptions /></ProtectedRoute>}/>
+      <Route path='/dashboard/patient' element={<ProtectedRoute allowedRole='patient'><DashboardPrincipalPatient /></ProtectedRoute>}/>
+
+      {/* Pharmacy Routes */}
+      <Route path='/dashboard/pharmacy' element={<ProtectedRoute allowedRole='pharmacy'><DashboardPrincipalPharmacy /></ProtectedRoute>} />
+
+      {/* Laboratoire Routes */}
+      <Route path='/dashboard/laboratoire' element={<ProtectedRoute allowedRole='laboratoire'><DashboardPrincipalLab /></ProtectedRoute>} />
+
+      {/* Admin Routes */}
+      <Route path='/dashboard/admin' element={<ProtectedRoute allowedRole='admin'><DashboardPrincipalAdmin /></ProtectedRoute>} />
 
     </Routes>
-    
     </BrowserRouter>
-    
-     
     </>
   )
 }
 
 export default App
+
