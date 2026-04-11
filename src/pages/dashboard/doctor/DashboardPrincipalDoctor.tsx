@@ -5,21 +5,22 @@ import type { Appointment } from '../../../types/appointment';
 import { getAppointmentsApi } from '../../../api/appointment.api';
 import type { Prescription } from '../../../types/prescription';
 import { getPrescriptionsApi } from '../../../api/prescription.api';
+import type { LabResult } from '../../../types/labResults';
+import { getLabResultsApi } from '../../../api/labResult.api';
 import SideBar from '../../../components/dashboard/doctor/SideBar';
 import { jwtDecode } from 'jwt-decode';
 import { toast } from 'react-toastify';
 
-
-
-
 function DashboardPrincipalDoctor() {
   const [myAppointments, setMyAppointments] = useState<Appointment[]>([])
   const [prescriptions, setPrescriptions] = useState<Prescription[]>([])
+  const [labResults, setLabResults] = useState<LabResult[]>([])
   const [loading, setLoading] = useState<boolean>(true);
   const [errorMessage, setErrorMessage] = useState<string>('');
   const [activePatients, setActivePatients] = useState<number>(0);
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [showFilters, setShowFilters] = useState<boolean>(false);
+console.log("res",);
 
   // Function to format date
   const formatDate = (dateString: string) => {
@@ -51,6 +52,12 @@ function DashboardPrincipalDoctor() {
       setLoading(false);
     }
     fetchPrescription();
+
+    const fetchLabResults = async () => {
+      const results = await getLabResultsApi(setErrorMessage);
+      setLabResults(results);
+    };
+    fetchLabResults();
 
     // const patientesIds=myAppointments.map(Appointment)
 
@@ -171,7 +178,7 @@ function DashboardPrincipalDoctor() {
                   <i className="fas fa-flask"></i>
                 </div>
                 <div className="ms-3">
-                  <div className="stat-value">1</div>
+                  <div className="stat-value">{labResults.filter(r => r.status === 'pending').length}</div>
                   <small className="text-muted">Résultats en attente</small>
                 </div>
               </div>
@@ -182,8 +189,8 @@ function DashboardPrincipalDoctor() {
         {/* Content Grid */}
         <div className="row g-3">
           {/* Left Column - Appointments Table */}
-          <div className="col-lg-10">
-            <div className="card">
+          <div className="col-lg-8">
+            <div className="card h-100">
               <div className="card-header d-flex justify-content-between align-items-center">
                 <h5 className="card-title mb-0">Derniers rendez-vous</h5>
                 <div className="d-flex gap-2">
@@ -285,7 +292,56 @@ function DashboardPrincipalDoctor() {
             </div>
           </div>
 
-          {/* Right Column - Notifications and Calendar */}
+          {/* Right Column - Lab Results Status */}
+          <div className="col-lg-4">
+            <div className="card h-100">
+              <div className="card-header d-flex justify-content-between align-items-center">
+                <h6 className="card-title mb-0">Résultats Laboratoire</h6>
+                <button className="btn btn-link btn-sm p-0 m-0 text-decoration-none">Voir tout</button>
+              </div>
+              <div className="card-body">
+                <div className="d-flex flex-column gap-3">
+                  {labResults.length > 0 ? labResults.slice(0, 5).map((result) => (
+                    <div key={result._id} className="d-flex align-items-center mb-2 pb-2 border-bottom">
+                      <div className="me-3">
+                        <div 
+                          className="rounded-circle d-flex align-items-center justify-content-center" 
+                          style={{ 
+                            width: '40px', 
+                            height: '40px', 
+                            backgroundColor: result.status === 'completed' ? '#e8f5e9' : '#fff3e0' 
+                          }}
+                        >
+                          <i className={`fas fa-flask ${result.status === 'completed' ? 'text-success' : 'text-warning'}`}></i>
+                        </div>
+                      </div>
+                      <div className="flex-grow-1">
+                        <h6 className="mb-0 text-dark" style={{ fontSize: '14px' }}>Test: {result.labOrderTestId?.substring(0, 8)}...</h6>
+                        <small className="text-muted d-flex align-items-center gap-1">
+                          <i className="fas fa-calendar-alt" style={{ fontSize: '10px' }}></i>
+                          {formatDate(result.date as string)}
+                        </small>
+                      </div>
+                      <div>
+                        {result.status === 'completed' ? (
+                          <span className={`badge ${result.isNormal ? 'badge-success' : 'badge-danger'}`}>
+                            {result.isNormal ? 'Normal' : 'Anormal'}
+                          </span>
+                        ) : (
+                          <span className="badge badge-warning">En attente</span>
+                        )}
+                      </div>
+                    </div>
+                  )) : (
+                    <div className="text-center py-4 text-muted">
+                      <i className="fas fa-flask-vial fa-2x mb-2 text-light"></i>
+                      <p className="mb-0">Aucun résultat récent</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
 
         </div>
 
