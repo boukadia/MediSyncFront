@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import '../../../styles/pages/doctorDashboard.css';
 
 interface SideBarProps {
@@ -7,9 +8,13 @@ interface SideBarProps {
 }
 
 const SideBar: React.FC<SideBarProps> = ({ isOpen, onClose }) => {
+  const navigate = useNavigate();
+
   const handleLogout = () => {
-    // Logique de déconnexion temporaire
-    console.log('Déconnexion');
+    // Logique de déconnexion temporelle / officielle
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    navigate('/login');
   };
 
   return (
