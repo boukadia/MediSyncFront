@@ -12,21 +12,20 @@ import {
 import { getSpecialiteApi, type Specialite } from "../../../api/specialite.api";
 import { getDoctorsApi, type User } from "../../../api/user.api";
 import {
-  getDisponibilitesApi,
-  setCreneauDisponibiliteApi,
-} from "../../../api/disponibility.api";
-import { toast } from 'react-toastify';
+  getDisponibilitesApi
+} from "../../../api/disponibilite.api";
+import { toast } from "react-toastify";
 import type { Creneau } from "../../../types/creneau";
 import { getCreneauxByIdApi } from "../../../api/creneau.api";
 import Header from "../../../components/dashboard/Patient/Header";
 
 function Appointment() {
-    const token = localStorage.getItem("token");
-    const decodedToken = jwtDecode(token);
-    const user:{ role?:string; name?:string; email?:string} = decodedToken;
-    
-    // const userName:string = (decodedToken as {name:string}).name
-console.log('userrole',decodedToken);
+  const token = localStorage.getItem("token");
+  const decodedToken = jwtDecode(token);
+  const user: { role?: string; name?: string; email?: string } = decodedToken;
+
+  // const userName:string = (decodedToken as {name:string}).name
+  console.log("userrole", decodedToken);
   const [showModal, setShowModal] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
@@ -54,7 +53,6 @@ console.log('userrole',decodedToken);
     }
     return null;
   };
-  
 
   // Function to format date
   const formatDate = (dateString: string) => {
@@ -101,7 +99,7 @@ console.log('userrole',decodedToken);
     const selectedSpecialiteId = event.target.value;
     setSelectedSpecialite(selectedSpecialiteId);
     const filteredDoctors = doctors.filter(
-      (doctor) => doctor.specialite === selectedSpecialiteId
+      (doctor) => doctor.specialite === selectedSpecialiteId,
     );
     setFilterDoctors(filteredDoctors);
 
@@ -120,11 +118,11 @@ console.log('userrole',decodedToken);
     const fetchDisponibilites = async () => {
       const disponibilites = await getDisponibilitesApi(
         selectedDoctorId,
-        setErrorMessage
+        setErrorMessage,
       );
       // ensure we always set an array of Disponibilite
       setDisponibilites(
-        Array.isArray(disponibilites) ? disponibilites : [disponibilites]
+        Array.isArray(disponibilites) ? disponibilites : [disponibilites],
       );
     };
     fetchDisponibilites();
@@ -142,7 +140,7 @@ console.log('userrole',decodedToken);
   //  )
 
   const handleDisponibiliteChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+    event: React.ChangeEvent<HTMLSelectElement>,
   ) => {
     console.log("eventtarget", event.target.value);
 
@@ -151,16 +149,16 @@ console.log('userrole',decodedToken);
     const fetchCreneaux = async () => {
       const creneaux = await getCreneauxByIdApi(
         disponibiliteId,
-        setErrorMessage
+        setErrorMessage,
       );
       // ensure we always set an array of Creneau
       setCreneaux(Array.isArray(creneaux) ? creneaux : [creneaux]);
     };
     fetchCreneaux();
     const selectedDisponibilite = disponibilites.find(
-      (disponibilite) => disponibilite._id === disponibiliteId
+      (disponibilite) => disponibilite._id === disponibiliteId,
     );
-    
+
     const dateAppointment = selectedDisponibilite
       ? selectedDisponibilite.dateHeureDebut
       : "";
@@ -202,7 +200,7 @@ console.log('userrole',decodedToken);
         selectedCreneau, // creneau
         consultationReason, // consultationReason
         consultationType, // typeConsultation
-        setErrorMessage
+        setErrorMessage,
       );
 
       // Reset form on success
@@ -233,13 +231,14 @@ console.log('userrole',decodedToken);
   const handleAppointmentStatus = async () => {
     try {
       console.log("daba");
-      
+
       setLoading(true);
     } catch (error) {
       console.error("Error fetching appointments:", error);
     } finally {
       // setLoading(false);
-    }}
+    }
+  };
 
   // Cancel appointment function
   const cancelAppointment = async (appointmentId: string) => {
@@ -255,7 +254,7 @@ console.log('userrole',decodedToken);
     if (appointment.status !== "confirmed") {
       if (appointment.status === "pending") {
         toast.warning(
-          "Ce rendez-vous est en attente de confirmation. Vous ne pouvez pas le modifier pour le moment."
+          "Ce rendez-vous est en attente de confirmation. Vous ne pouvez pas le modifier pour le moment.",
         );
       } else {
         toast.error("Ce rendez-vous ne peut pas être annulé.");
@@ -316,7 +315,7 @@ console.log('userrole',decodedToken);
     return appointment.status === "cancelled";
   });
   const pastAppointments = myAppointments.filter(
-    (appointment) => appointment.status === "completed"
+    (appointment) => appointment.status === "completed",
   );
   // console.log()
   // console.log(concelledAppointments);
@@ -324,7 +323,7 @@ console.log('userrole',decodedToken);
   return (
     <div>
       {/* Sidebar */}
-      <SideBare  />
+      <SideBare />
 
       {/* Main Content */}
       <div className="main-content">
@@ -376,7 +375,6 @@ console.log('userrole',decodedToken);
             <button
               className="nav-link"
               data-bs-toggle="tab"
-              
               data-bs-target="#cancelled"
             >
               <i className="fas fa-times-circle me-2"></i>Annulés
@@ -439,8 +437,8 @@ console.log('userrole',decodedToken);
                                 appointment.status === "pending"
                                   ? "En attente de confirmation"
                                   : appointment.status !== "confirmed"
-                                  ? "Ne peut pas être annulé"
-                                  : ""
+                                    ? "Ne peut pas être annulé"
+                                    : ""
                               }
                             >
                               <i className="fas fa-times me-1"></i>Annuler
@@ -506,9 +504,10 @@ console.log('userrole',decodedToken);
                                 cancelAppointment(appointment._id)
                               }
                               disabled={
-                                loading ||( appointment.status !== "confirmed" && appointment.status !== "pending")
+                                loading ||
+                                (appointment.status !== "confirmed" &&
+                                  appointment.status !== "pending")
                               }
-                             
                             >
                               <i className="fas fa-times me-1"></i>Annuler
                             </button>
