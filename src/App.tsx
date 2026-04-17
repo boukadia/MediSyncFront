@@ -41,6 +41,7 @@ import AdminSpecialites from './pages/dashboard/admin/AdminSpecialites.tsx'
 import AdminAppointments from './pages/dashboard/admin/AdminAppointments.tsx'
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import DossierMedical from './pages/dashboard/patient/DossierMedical.tsx'
 
 function App() {
 
@@ -67,6 +68,8 @@ function App() {
       <Route path="/dashboard/patient/tests" element={<ProtectedRoute allowedRole='patient'><Test /></ProtectedRoute>} />  
       <Route path='/dashboard/patient/prescriptions' element={<ProtectedRoute allowedRole='patient'><Prescriptions /></ProtectedRoute>}/>
       <Route path='/dashboard/patient' element={<ProtectedRoute allowedRole='patient'><DashboardPrincipalPatient /></ProtectedRoute>}/>
+      <Route path='/dashboard/patient/myDossierMedical' element={<ProtectedRoute allowedRole='patient'><DossierMedical /></ProtectedRoute>}/>
+      
 
       {/* Pharmacy Routes */}
       <Route path='/dashboard/pharmacy' element={<ProtectedRoute allowedRole='pharmacy'><DashboardPrincipalPharmacy /></ProtectedRoute>} />

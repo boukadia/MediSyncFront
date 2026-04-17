@@ -28,7 +28,7 @@ function SideBare() {
             <Link className={isActive('/dashboard/patient/prescriptions')} to="/dashboard/patient/prescriptions" >
                 <i className="fas fa-pills me-2"></i> Mes Ordonnances
             </Link>
-            <Link className={isActive('/dashboard/patient/dossierMedical')} to="/dashboard/patient/dossierMedical" >
+            <Link className={isActive('/dashboard/patient/myDossierMedical')} to="/dashboard/patient/myDossierMedical" >
                 <i className="fas fa-file-medical me-2"></i> Dossier Médical
             </Link>
             <Link className={isActive('/dashboard/patient/doctor')} to="/dashboard/patient/doctor" >
