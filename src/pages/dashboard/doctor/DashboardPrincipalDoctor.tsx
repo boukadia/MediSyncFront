@@ -334,7 +334,7 @@ console.log("res",);
                     </div>
                   )) : (
                     <div className="text-center py-4 text-muted">
-                      <i className="fas fa-flask-vial fa-2x mb-2 text-light"></i>
+                      <i className="fas fa-flask-vial fa-2x mb-2 text-secondary"></i>
                       <p className="mb-0">Aucun résultat récent</p>
                     </div>
                   )}
