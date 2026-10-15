@@ -59,7 +59,7 @@ function DoctorAppointments() {
     // Filter appointments by status
     const confirmedAppointments = myAppointments.filter(apt => apt.status === 'confirmed');
     const pendingAppointments = myAppointments.filter(apt => apt.status === 'pending');
-    const completedAppointments = myAppointments.filter(apt => apt.status === 'completed');
+    // const completedAppointments = myAppointments.filter(apt => apt.status === 'completed');
 
     return (
         <div className="doctor-dashboard">
