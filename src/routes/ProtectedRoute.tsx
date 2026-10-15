@@ -12,8 +12,9 @@ function ProtectedRoute({ children, allowedRole }: { children: React.ReactElemen
     }
 
 
+    const apiBase = import.meta.env.VITE_API || "http://localhost:3000/api";
     // Vérifier la validité du token auprès du backend
-    fetch("http://localhost:3000/api/auth/validate", {
+    fetch(`${apiBase}/auth/validate`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
