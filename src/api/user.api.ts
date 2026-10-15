@@ -1,4 +1,4 @@
-// user.api
+// user.api - Services pour afficher et gérer les utilisateurs
 //  import type User from "../pages/dashboard/patient/User";
 import type { User } from "../types/user";
  export type {User}
