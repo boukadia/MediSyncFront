@@ -23,3 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 *.env
+!.env.example
+auto-sync.ps1
+auto-sync.sh
+INTEGRATION_SUMMARY.md
+BOOTSTRAP_GUIDE.md
