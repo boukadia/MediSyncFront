@@ -371,6 +371,7 @@
 }
 
 /* Tabs & Filter Navigation (Doctor Appointments, Consultations, Prescriptions, Lab Orders) */
+/* Style des boutons de filtre et navigation par onglets avec fond #9aaec373 */
 .doctor-dashboard .nav-tabs {
   border-bottom: 2px solid #dee2e6;
   gap: 0.35rem;
